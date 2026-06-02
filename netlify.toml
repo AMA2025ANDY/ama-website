@@ -1,0 +1,22 @@
+[build]
+  publish = "/"
+
+# 优化资源缓存
+[[headers]]
+  for = "/*.mp4"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# 这是纯静态多页站(有真实的 index.html 和 project.html),
+# 不需要 SPA fallback。原来那条 "/*" -> /index.html 会吞掉 project.html,已移除。
+# 找不到的页面交给 Netlify 默认 404 即可。

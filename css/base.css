@@ -1,0 +1,47 @@
+/* css/base.css - 基础通用样式 */
+
+:root {
+    /* 定义全局变量，想换颜色改这里就行 */
+    --bg-color: #f4f4f4;
+    --text-color: #1a1a1a;
+    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --gap: 20px;
+}
+
+/* 1. 重置浏览器默认样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* 这一点非常重要，防止边框撑大盒子 */
+}
+
+/* 2. 全局字体与背景 */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    -webkit-font-smoothing: antialiased; /* 让字体在 Mac 上更清晰 */
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility; /* 优化文本渲染 */
+    overflow-x: hidden; /* 防止横向出现滚动条 */
+    line-height: 1.5;
+}
+
+/* 3. 链接通用样式 */
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* 4. 图片通用样式 */
+img, video {
+    max-width: 100%;
+    display: block;
+}
+
+/* 5. 锁定滚动的样式 (给 JS 用的) */
+body.locked {
+    overflow: hidden;
+    height: 100vh;
+}

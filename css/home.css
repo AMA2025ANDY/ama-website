@@ -1,0 +1,417 @@
+/* css/home.css (Final: Text support + Cursor fixes + Animations + Optimized) */
+
+/* === 1. 视频背景 === */
+.video-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100vh; z-index: -1;
+}
+.bg-video { width: 100%; height: 100%; object-fit: cover; }
+
+/* === 2. Logo === */
+.center-logo-container {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
+    z-index: 10; mix-blend-mode: difference;
+    pointer-events: none; transition: opacity 0.5s ease;
+    will-change: opacity; /* 性能优化 */
+}
+.big-logo { width: 50vw; filter: invert(1) brightness(2); }
+
+/* === 3. 内容区 === */
+.main-content {
+    position: relative; top: 100vh;
+    background: #f4f4f4; z-index: 20;
+    min-height: 100vh; padding-bottom: 200px;
+}
+
+/* === 4. 文字介绍区 (响应式适配版) === */
+.intro-text-section {
+    height: auto;
+    display: flex; align-items: flex-start; justify-content: flex-start;
+    padding-top: 20px; 
+    padding-left: clamp(10px, 3vw, 20px); 
+    padding-right: clamp(10px, 3vw, 20px); 
+    padding-bottom: 80px; 
+}
+
+.intro-sentence {
+    font-family: 'Times New Roman', Times, Baskerville, Georgia, serif;
+    font-weight: 700; 
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+    
+    line-height: 1.1; 
+    letter-spacing: -0.5px; 
+    max-width: 1300px; 
+    text-align: left; 
+    color: #000;
+    transition: opacity 0.3s ease;
+}
+
+.nav-word { 
+    text-decoration: underline; 
+    text-underline-offset: 3px; 
+    text-decoration-thickness: 1.3px;
+    cursor: pointer; 
+}
+/* === 5. 导航栏样式 (Fixed Navbar - 移动端适配升级版) === */
+.fixed-navbar {
+    position: fixed; top: 0; left: 0; width: 100%; 
+    /* 左右内边距改为响应式：手机端窄一点(10px)，电脑端宽一点(20px) */
+    padding: 20px clamp(10px, 3vw, 20px);
+    display: flex; align-items: baseline; 
+    
+    /* 关键点1：Gap 间距随屏幕变小而变小 (最小5px，最大15px) */
+    gap: clamp(5px, 1.5vw, 15px);
+    
+    /* 关键点2：允许在极小屏幕下自动换行，避免被切掉 */
+    flex-wrap: wrap; 
+    
+    z-index: 100; opacity: 0; transform: translateY(-20px);
+    transition: all 0.5s ease; pointer-events: none;
+    mix-blend-mode: difference; overflow: visible;
+    will-change: opacity, transform;
+}
+
+.fixed-navbar.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+.fixed-navbar a { 
+    text-decoration: none; color: #ffffff; 
+    font-family: 'Times New Roman', Times, serif; 
+    font-weight: 700; 
+    
+    /* 🌟 核心升级：流体字号 (Fluid Typography) 🌟
+       解释：clamp(最小值, 理想值, 最大值)
+       - 最小不会小于 1.2rem (手机上保证清晰，不会太小)
+       - 理想是视口宽度的 3.5% (随屏幕缩放)
+       - 最大限制在 2.2rem (电脑上保持原样)
+    */
+    font-size: clamp(1.2rem, 3.5vw, 2.2rem);
+    letter-spacing: -0.5px; line-height: 1.1; 
+    text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1.3px;
+    text-transform: capitalize; 
+    transition: font-style 0.3s ease, opacity 0.3s ease; 
+    white-space: nowrap; /* 保持单词内部不换行 */
+    display: inline-block;
+}
+
+.fixed-navbar a:hover { opacity: 1; font-style: italic; }
+
+/* 分隔符逻辑 (冒号与逗号) */
+/* 必须修改：让标点符号的字号继承链接的大小，而不是锁死在 2.2rem */
+.fixed-navbar a.nav-brand::after {
+    content: ":"; margin-left: 2px; font-style: normal; text-decoration: none; display: inline-block;
+}
+
+.fixed-navbar .nav-dropdown-wrapper a.main-link::after,
+.fixed-navbar > a[href*="objects"]::after,
+.fixed-navbar > a[href*="resources"]::after {
+    content: ","; 
+    color: inherit; 
+    margin-left: 2px; 
+    font-style: normal; 
+    text-decoration: none; 
+    display: inline-block; 
+    font-weight: 700; 
+    font-family: 'Times New Roman';
+    
+    /* 关键修复：让逗号大小跟随文字缩放 */
+    font-size: inherit; 
+}
+
+/* === 针对手机端的额外微调 === */
+@media (max-width: 600px) {
+    .fixed-navbar {
+        /* 在手机上稍微紧凑一点，防止占满半个屏幕 */
+        padding-top: 15px;
+        padding-bottom: 10px;
+        align-items: center; /* 垂直对齐 */
+    }
+    
+    /* 如果屏幕实在太小，允许 "Projects, Objects..." 换到第二行 */
+    .nav-dropdown-wrapper.no-comma {
+        /* 让 AMA: 稍微有点右边距 */
+        margin-right: 5px;
+    }
+}
+/* === 6. 下拉菜单样式 (Updated: Fluid Typography) === */
+.nav-dropdown-wrapper { 
+    position: relative; 
+    display: inline-flex; 
+    align-items: baseline; 
+    height: auto; 
+}
+
+.dropdown-content {
+    position: absolute; 
+    top: 100%; 
+    left: 0; 
+    padding-top: 10px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+    opacity: 0; 
+    transform: translateY(-10px); 
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.nav-dropdown-wrapper:hover .dropdown-content { 
+    opacity: 1; 
+    transform: translateY(0); 
+    pointer-events: all; 
+}
+
+.dropdown-content a {
+    font-family: 'Times New Roman', serif; 
+    
+    /* 🌟 核心升级：流体字号 🌟
+       手机上 1.1rem -> 电脑上 1.6rem 
+    */
+    font-size: clamp(.1rem, 2.5vw, 1.6rem);
+    
+    color: #fff; 
+    text-decoration: none; 
+    white-space: nowrap; 
+    opacity: 0.8;
+    line-height: 1.4; /* 防止缩放时文字挤在一起 */
+}
+
+.dropdown-content a:hover { 
+    opacity: 1; 
+    font-style: italic; 
+    text-decoration: underline; 
+}
+
+/* 反色模式适配 (Grid Mode) */
+body:has(.grid-mode) .dropdown-content a { 
+    color: #000 !important; 
+}
+
+/* === 7. AMA 联系信息样式 === */
+.dropdown-content.contact-info {
+    width: max-content; min-width: 280px; padding-top: 15px; 
+    text-align: left; display: flex; flex-direction: column; gap: 5px; 
+}
+.contact-info p, .contact-info .contact-email, .contact-info .contact-header {
+    font-family: 'Times New Roman', Times, serif; font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 700; font-style: normal;
+    color: #ffffff; opacity: 1; margin: 0; text-decoration: none; white-space: nowrap; line-height: 1.2; letter-spacing: -0.5px; border-bottom: none;
+}
+
+/* === 8. 邮箱点击复制样式 === */
+.email-copy-wrapper { position: relative; display: inline-block; cursor: pointer; }
+.email-copy-wrapper:hover .contact-email { font-style: italic; text-decoration: underline; opacity: 0.8; }
+.copy-tip {
+    position: absolute; bottom: 100%; left: 70%; transform: translateX(-50%) translateY(10px);
+    background-color: #ffffff; color: #000000; padding: 4px 8px; border-radius: 4px;
+    font-size: 0.75rem; font-family: 'Helvetica Neue', sans-serif; font-weight: bold;
+    pointer-events: none; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.email-copy-wrapper.active .copy-tip { opacity: 1; transform: translateX(-50%) translateY(-5px); }
+
+/* === 9. 瀑布流容器 & 悬停动效 === */
+.waterfall-container {
+    display: grid; grid-template-columns: repeat(12, 1fr); 
+    grid-auto-rows: 1px; column-gap: 0px; row-gap: 0px; padding: 0; align-items: start;
+}
+.waterfall-item { margin: 0; position: relative; cursor: none; will-change: transform; }
+
+.layout-full { grid-column: span 12; }
+.layout-wide { grid-column: span 8; }
+.layout-narrow { grid-column: span 4; }
+.layout-half { grid-column: span 6; }
+.layout-center { grid-column: 4 / 10; }
+
+.waterfall-item img,
+.waterfall-item video, 
+.waterfall-item .video-wrapper { 
+    width: 100%; height: auto; display: block; transition: transform 0.5s ease;
+    pointer-events: auto; 
+}
+.waterfall-item:hover img,
+.waterfall-item:hover video,
+.waterfall-item:hover .video-wrapper { 
+    transform: scale(0.98);
+}
+
+/* === 10. 弹窗专用样式 (Updated: Responsive Typography + Layout) === */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+    z-index: 9999; display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+}
+.modal-overlay.active { opacity: 1; pointer-events: all; }
+
+.modal-backdrop {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.4); 
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+    cursor: pointer;
+}
+
+.modal-content {
+    position: relative; width: 90vw; height: 90vh; background: #fff;
+    overflow-y: auto; padding: 0; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    transform: translateY(20px); 
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    scrollbar-width: none; -ms-overflow-style: none;
+}
+.modal-content::-webkit-scrollbar { display: none; }
+.modal-overlay.active .modal-content { transform: translateY(0); }
+
+.close-btn {
+    position: sticky; top: 20px; float: right; margin-right: 20px; margin-top: 20px; 
+    z-index: 100; background: none; border: none; 
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 1rem; font-weight: bold; letter-spacing: 1px; cursor: pointer; color: #000;
+}
+.close-btn:hover { text-decoration: underline; }
+
+/* --- 弹窗头部与标题 --- */
+.modal-project-header { padding: 100px 5vw 40px; max-width: 100%; }
+
+.modal-title { 
+    font-family: 'Times New Roman', serif; 
+    font-weight: 700; 
+    margin-bottom: 10px; 
+    line-height: 1; 
+    
+    /* 🌟 标题缩放：手机 2rem -> 电脑 4.5rem */
+    font-size: clamp(2rem, 6vw, 4.5rem);
+}
+
+.modal-meta { 
+    font-family: 'Helvetica Neue', sans-serif; 
+    
+    /* 🌟 副标题缩放 */
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    
+    color: #666; text-transform: uppercase; letter-spacing: 1px; 
+    display: flex; gap: 20px; 
+}
+
+.modal-waterfall-container { 
+    display: grid; 
+    grid-template-columns: repeat(12, 1fr); 
+    grid-auto-rows: 1px; 
+    padding-bottom: 100px; 
+    align-items: start; 
+}
+
+/* --- 文本块样式 (Text Layout) --- */
+.project-text-block {
+    padding: 20px 5vw; 
+    display: flex; flex-direction: column; justify-content: center;
+}
+
+.text-title {
+    font-family: 'Times New Roman', serif; 
+    font-weight: 700; 
+    margin-bottom: 15px; 
+    color: #000;
+    
+    /* 🌟 文本标题缩放 */
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+}
+
+.text-content {
+    font-family: 'Helvetica Neue', sans-serif; 
+    
+    /* 🌟 正文缩放：最小 1rem (16px) 保证可读性 */
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+    
+    line-height: 1.6; 
+    color: #333; 
+    white-space: pre-line; /* 保留txt里的换行 */
+}
+
+/* 弹窗内禁止悬停缩放效果 */
+.modal-waterfall-container .waterfall-item:hover img,
+.modal-waterfall-container .waterfall-item:hover video,
+.modal-waterfall-container .waterfall-item:hover .video-wrapper {
+    transform: none !important; cursor: default;
+}
+/* === 11. 整齐网格模式 (Grid Mode) === */
+.waterfall-container.grid-mode {
+    display: grid; grid-template-columns: repeat(5, 1fr) !important; grid-auto-rows: auto !important; 
+    gap: 200px 200px !important; padding: 0 40px 100px; align-items: end;           
+}
+@media (max-width: 1500px) { .waterfall-container.grid-mode { grid-template-columns: repeat(4, 1fr) !important; gap: 180px 180px !important; } }
+@media (max-width: 1100px) { .waterfall-container.grid-mode { grid-template-columns: repeat(3, 1fr) !important; gap: 220px 220px !important; } }
+@media (max-width: 900px) { .waterfall-container.grid-mode { grid-template-columns: repeat(2, 1fr) !important; padding: 0 80px 80px; } }
+@media (max-width: 600px) { .waterfall-container.grid-mode { grid-template-columns: 1fr !important; gap: 50px !important; } }
+
+.grid-mode .waterfall-item {
+    grid-column: auto !important; grid-row-end: auto !important; width: 100% !important; margin: 0 !important;
+}
+.grid-mode .waterfall-item img, 
+.grid-mode .waterfall-item video {
+    width: 100%; aspect-ratio: 3 / 4; object-fit: cover; height: auto; display: block;
+}
+
+/* === 12. 反色模式修正 === */
+body:has(.grid-mode) .fixed-navbar,
+body:has(.grid-mode) .fixed-navbar a,
+body:has(.grid-mode) .fixed-navbar .nav-dropdown-wrapper a.main-link::after,
+body:has(.grid-mode) .fixed-navbar > a::after,
+body:has(.grid-mode) .fixed-navbar a.nav-brand::after,
+body:has(.grid-mode) .nav-dropdown-wrapper::after,
+body:has(.grid-mode) .dropdown-content a,
+body:has(.grid-mode) .contact-info p,
+body:has(.grid-mode) .contact-info .contact-email,
+body:has(.grid-mode) .contact-info .contact-header {
+    mix-blend-mode: difference !important; color: #ffffff !important; opacity: 1 !important;
+}
+body:has(.grid-mode) .copy-tip { background-color: #ffffff !important; color: #000000 !important; }
+
+/* === 13. 动效 (撕传单) === */
+@keyframes tearDown {
+    0% { transform: rotate(0deg) translateY(0); opacity: 1; transform-origin: top center; }
+    20% { transform: rotate(-5deg) translateY(10px); opacity: 1; }
+    40% { transform: rotate(5deg) translateY(20px); opacity: 0.9; }
+    100% { transform: rotate(10deg) translateY(100vh); opacity: 0; }
+}
+@keyframes putBack {
+    0% { transform: rotate(10deg) translateY(100vh); opacity: 0; }
+    60% { transform: rotate(-5deg) translateY(-10px); opacity: 0.8; }
+    100% { transform: rotate(0deg) translateY(0); opacity: 1; }
+}
+.waterfall-item.tearing {
+    animation: tearDown 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+    z-index: 999; pointer-events: none; opacity: 0;
+}
+.waterfall-item.putting-back {
+    animation: putBack 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    z-index: 99;
+}
+
+/* === 14. 鼠标跟随器 === */
+#cursor-follower {
+    position: fixed; 
+    top: 0; left: 0; 
+    pointer-events: none; 
+    z-index: 9999;
+    mix-blend-mode: difference;
+    opacity: 0; 
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.15s ease, transform 0.1s ease;
+    will-change: transform, opacity; /* 性能优化 */
+    
+    color: #ffffff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+    font-weight: 700; 
+    font-size: 1rem; 
+    text-transform: capitalize;
+    white-space: nowrap; 
+    letter-spacing: -0.5px;
+}
+
+#cursor-follower.active { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+}
+
+@media (max-width: 768px) {
+    #cursor-follower { display: none !important; }
+}

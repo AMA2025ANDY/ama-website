@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+    
+    <style>
+        body { background: #fff; color: #000; }
+        .project-header { padding: 150px 20px 50px; max-width: 100%; box-sizing: border-box; }
+        .project-title { font-family: 'Times New Roman', serif; font-size: 4rem; font-weight: 700; margin-bottom: 10px; line-height: 1; }
+        .project-meta { font-family: 'Helvetica Neue', sans-serif; font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 1px; display: flex; gap: 20px; }
+        .waterfall-container { padding-bottom: 150px; }
+        .project-text-block { padding: 40px 20px; display: flex; flex-direction: column; justify-content: center; }
+        .text-title { font-family: 'Times New Roman', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
+        .text-content { font-family: 'Helvetica Neue', sans-serif; font-size: 1.1rem; line-height: 1.6; color: #333; white-space: pre-line; }
+        .fixed-navbar { opacity: 1 !important; transform: translateY(0) !important; pointer-events: all !important; mix-blend-mode: normal !important; }
+        .fixed-navbar a, .fixed-navbar > a:not(:last-child)::after { color: #000 !important; }
+        .nav-dropdown-wrapper::after { color: #000 !important; }
+        .waterfall-item:hover img, .waterfall-item:hover video { transform: none !important; cursor: default; }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed-navbar">
+        <div class="nav-dropdown-wrapper">
+            <a href="index.html" class="main-link">Projects</a>
+            <div class="dropdown-content">
+                <a href="index.html?filter=residential">Residential</a>
+                <a href="index.html?filter=commercial">Commercial</a>
+                <a href="index.html?filter=hospitality">Hospitality</a>
+            </div>
+        </div>
+        <a href="index.html?filter=objects">Objects</a>
+        <a href="index.html?filter=resources">Resources</a>
+        <a href="index.html?filter=editorial">Editorial</a>
+    </nav>
+
+    <main>
+        <div class="project-header">
+            <h1 class="project-title" id="p-title">Loading...</h1>
+            <div class="project-meta">
+                <span id="p-cat"></span>
+                <span id="p-year"></span>
+            </div>
+        </div>
+        <div class="waterfall-container" id="p-content"></div>
+    </main>
+
+    <script src="js/data.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            const pid = params.get('id');
+            
+            if (typeof projectsData === 'undefined') {
+                document.getElementById('p-title').innerText = "Error: data.js not found";
+                return;
+            }
+
+            const project = projectsData.find(p => p.id === pid);
+            if (!project) {
+                document.getElementById('p-title').innerText = "Project Not Found";
+                return;
+            }
+
+            document.title = project.title + " - AMA";
+            document.getElementById('p-title').innerText = project.title;
+            document.getElementById('p-cat').innerText = project.category;
+            document.getElementById('p-year').innerText = project.year;
+
+            const container = document.getElementById('p-content');
+
+            if (project.content && project.content.length > 0) {
+                for (const item of project.content) {
+                    const div = document.createElement('div');
+                    div.classList.add('waterfall-item');
+
+                    let userLayout = 'half'; 
+                    if (typeof item === 'object' && item.layout) userLayout = item.layout;
+                    div.classList.add(`layout-${userLayout}`);
+
+                    if (typeof item === 'object' && item.type === 'text-file') {
+                        div.classList.add('project-text-block');
+                        const txtPath = `${ASSET_BASE}/assets/projects/${project.id}/${item.src}`;
+                        try {
+                            const response = await fetch(txtPath);
+                            if (response.ok) {
+                                const textData = await response.text();
+                                if (item.title) {
+                                    const t = document.createElement('div');
+                                    t.className = 'text-title';
+                                    t.textContent = item.title;
+                                    div.appendChild(t);
+                                }
+                                const c = document.createElement('div');
+                                c.className = 'text-content';
+                                c.textContent = textData;
+                                div.appendChild(c);
+                            } else {
+                                div.textContent = `Error loading text: ${item.src}`;
+                            }
+                        } catch (err) { console.error(err); }
+                    }
+                    else if (typeof item === 'object' && item.type === 'text') {
+                        div.classList.add('project-text-block');
+                        if (item.title) {
+                            const t = document.createElement('div');
+                            t.className = 'text-title';
+                            t.textContent = item.title;
+                            div.appendChild(t);
+                        }
+                        if (item.text) {
+                            const c = document.createElement('div');
+                            c.className = 'text-content';
+                            c.textContent = item.text;
+                            div.appendChild(c);
+                        }
+                    }
+                    else if (typeof item === 'object' && item.type === 'image') {
+                         const path = `${ASSET_BASE}/assets/projects/${project.id}/${item.src}`;
+                         div.innerHTML = `<img src="${path}" alt="Detail">`;
+                    }
+                    else if (typeof item === 'object' && item.type === 'video') {
+                         const path = `${ASSET_BASE}/assets/projects/${project.id}/${item.src}`;
+                         div.innerHTML = `<video autoplay muted loop playsinline style="width:100%; display:block;"><source src="${path}" type="video/mp4"></video>`;
+                    }
+                    else if (typeof item === 'string') {
+                        const path = `${ASSET_BASE}/assets/projects/${project.id}/${item}`;
+                        if (item.toLowerCase().endsWith('.mp4')) {
+                             div.innerHTML = `<video autoplay muted loop playsinline style="width:100%; display:block;"><source src="${path}" type="video/mp4"></video>`;
+                        } else {
+                            div.innerHTML = `<img src="${path}" alt="Detail">`;
+                        }
+                    }
+
+                    container.appendChild(div);
+                    // Image load check
+                    const media = div.querySelector('img, video');
+                    if (media) {
+                        media.onload = () => resizeGridItem(div);
+                        media.onloadeddata = () => resizeGridItem(div);
+                    }
+                }
+                setTimeout(resizeAllGridItems, 200);
+            } else {
+                container.innerHTML = "<p style='padding:20px'>No content available.</p>";
+            }
+        });
+
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        function resizeAllGridItems() {
+            const allItems = document.getElementsByClassName("waterfall-item");
+            for (let x = 0; x < allItems.length; x++) {
+                resizeGridItem(allItems[x]);
+            }
+        }
+
+        function resizeGridItem(item) {
+            const grid = document.getElementsByClassName("waterfall-container")[0];
+            const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+            const contentHeight = item.scrollHeight;
+            if(contentHeight === 0) return;
+            const rowSpan = Math.ceil(contentHeight / rowHeight);
+            item.style.gridRowEnd = "span " + rowSpan;
+        }
+
+        window.addEventListener("resize", debounce(resizeAllGridItems, 100));
+    </script>
+</body>
+</html>
