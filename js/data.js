@@ -18,7 +18,9 @@
 
 // 素材 CDN 前缀。改了仓库名/分支只动这一行。
 // 本地调试时改成: const ASSET_BASE = "";
-const ASSET_BASE = "https://cdn.jsdelivr.net/gh/AMA2025ANDY/ama-website@main";
+const ASSET_BASE = location.hostname === "127.0.0.1" || location.hostname === "localhost"
+    ? ""
+    : "https://cdn.jsdelivr.net/gh/AMA2025ANDY/ama-website@main";
 
 // 把四个分类数组合并成全站统一的一份 projectsData。
 // 顺序 = 首页瀑布流顺序。想调整大类先后,改下面的拼接顺序即可。

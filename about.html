@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Andy Martin Architecture</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/home.css">
+
+    <!-- ===================================================================
+         ABOUT 页专用样式
+         说明：
+         - 本页是纯白底，没有背景视频，所以必须覆盖掉导航的 mix-blend-mode，
+           否则黑字在白底上会变白消失（和 project.html 同样的处理）。
+         - 内容区参照 mesura.eu/studio：左右两栏，每栏若干信息块。
+    =================================================================== -->
+    <style>
+        body { background:#fff; color:#000; }
+
+        /* --- 导航在白底上的修正（关键，别删）--- */
+        .fixed-navbar{
+            opacity:1 !important;
+            transform:translateY(0) !important;
+            pointer-events:all !important;
+            mix-blend-mode:normal !important;
+        }
+        .fixed-navbar a,
+        .fixed-navbar a.nav-brand::after,
+        .fixed-navbar .nav-dropdown-wrapper a.main-link::after,
+        .fixed-navbar > a[href*="objects"]::after,
+        .fixed-navbar > a[href*="resources"]::after{
+            color:#000 !important;
+        }
+        /* AMA 悬停下拉里的联系信息，白底上改黑字 */
+        .dropdown-content a,
+        .contact-info p,
+        .contact-info .contact-email,
+        .contact-info .contact-header{
+            color:#000 !important;
+        }
+
+        /* --- ABOUT 内容区 --- */
+        .about-wrap{
+            padding:150px clamp(20px,5vw,60px) 120px;
+            max-width:1600px;
+        }
+        .about-columns{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            column-gap:clamp(40px,8vw,160px);
+            row-gap:80px;
+        }
+        .about-block{ }
+        .about-label{
+            font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;
+            font-size:clamp(1rem,1.6vw,1.25rem);
+            font-weight:700;
+            letter-spacing:0.5px;
+            text-transform:uppercase;
+            margin-bottom:24px;
+        }
+        .about-body{
+            font-family:'Times New Roman',Times,serif;
+            font-weight:700;
+            font-size:clamp(1.4rem,2.6vw,2.1rem);
+            line-height:1.25;
+            letter-spacing:-0.5px;
+        }
+        .about-body a{ text-decoration:underline; text-underline-offset:3px; }
+        .about-body a:hover{ font-style:italic; }
+        /* 媒体名单 / 链接竖排 */
+        .about-list{ display:flex; flex-direction:column; }
+        .about-list a, .about-list span{
+            font-family:'Times New Roman',Times,serif;
+            font-weight:700;
+            font-size:clamp(1.4rem,2.6vw,2.1rem);
+            line-height:1.4;
+            letter-spacing:-0.5px;
+            text-decoration:underline;
+            text-underline-offset:3px;
+        }
+        .about-list a:hover{ font-style:italic; }
+
+        /* 手机端单栏 */
+        @media (max-width:768px){
+            .about-columns{ grid-template-columns:1fr; row-gap:60px; }
+            .about-wrap{ padding-top:120px; }
+        }
+
+       .dropdown-content.contact-info{ display:none; }
+       .dropdown-content{ display:none; }
+        
+    </style>
+</head>
+<body>
+
+    <!-- ===== 导航：和首页一致（AMA 悬停下拉 + 点击进本页）===== -->
+    <nav class="fixed-navbar">
+
+        <div class="nav-dropdown-wrapper no-comma">
+            <!-- 点 AMA：在 about 页点它回首页；下拉悬停仍显示简略联系信息 -->
+            <a href="index.html" class="nav-brand">AMA</a>
+            <div class="dropdown-content contact-info">
+                <p class="contact-header">For any enquiries please contact us here:</p>
+                <p>Unit 18, 10 Acklam Road</p>
+                <p>London, W10 5QZ</p>
+                <p>T. +44 (0)20 3397 1999</p>
+                <div class="email-copy-wrapper" id="email-trigger">
+                    <span class="contact-email">pr@andymartinarchitecture.com</span>
+                    <span class="copy-tip">Copied!</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-dropdown-wrapper">
+            <a href="index.html?filter=all" class="main-link">Projects</a>
+            <div class="dropdown-content">
+                <a href="index.html?filter=residential">Residential</a>
+                <a href="index.html?filter=commercial">Commercial</a>
+                <a href="index.html?filter=hospitality">Hospitality</a>
+            </div>
+        </div>
+
+        <a href="index.html?filter=objects">Objects</a>
+        <a href="index.html?filter=resources">Resources</a>
+        <a href="index.html?filter=editorial">Editorial</a>
+    </nav>
+
+    <!-- ============================================================
+         ABOUT 内容区
+         ▌全部是占位文字，[填写XXX] 的地方换成你的真实内容。
+         ▌想加/删一个块，整段复制或删掉 <div class="about-block">...</div>
+         ▌链接：把 href="#" 换成真实网址
+    ============================================================ -->
+    <main class="about-wrap">
+        <div class="about-columns">
+
+            <!-- 左栏 1：联系 -->
+            <div class="about-block">
+                <div class="about-label">Get in touch</div>
+                <div class="about-body">
+                    For new project enquiries<br>
+                    <a href="mailto:pr@andymartinarchitecture.com">pr@andymartinarchitecture.com</a>
+                    <br><br>
+                    <!-- [填写：如果有第二个邮箱，比如媒体/合作，放这里] -->
+                    For press and collaborations<br>
+                    <a href="mailto:[填写邮箱]">Email</a>
+                </div>
+            </div>
+
+            <!-- 右栏 1：招聘 -->
+            <div class="about-block">
+                <div class="about-label">Job applications</div>
+                <div class="about-body">
+                    <!-- [填写：招聘说明文案] -->
+                    We're always looking for new talent.(or it can be something else.)
+                    <a href="[填写链接]">if you want any link</a>
+                </div>
+            </div>
+
+            <!-- 左栏 2：办公室 + 社交 -->
+            <div class="about-block">
+                <div class="about-label">Office</div>
+                <div class="about-body">
+                    Unit 12, 10 Acklam Road<br>
+                    London, W10 5QZ<br>
+                    T. +44 (0)20 3397 1999
+                </div>
+                <div class="about-list" style="margin-top:24px;">
+                    <a href="[填写：Google Maps 链接]">View Map</a>
+                    <a href="[填写：Instagram 链接]">Instagram</a>
+                    <a href="[填写：LinkedIn 链接]">LinkedIn</a>
+                </div>
+            </div>
+
+            <!-- 右栏 2：媒体报道 -->
+            <div class="about-block">
+                <div class="about-label">Press</div>
+                <div class="about-list">
+                    <!-- [填写：每个媒体一行，有链接就 <a href>，没链接用 <span>] -->
+                    <a href="[填写链接]">media</a>
+                    <a href="[填写链接]">Media</a>
+                    <a href="[填写链接]">Media</a>
+                    <span>Media without link</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 邮箱点击复制：复用首页那段逻辑（只保留复制功能，不依赖 data.js）-->
+    <script>
+        const emailTrigger = document.getElementById('email-trigger');
+        if (emailTrigger) {
+            emailTrigger.addEventListener('click', () => {
+                navigator.clipboard.writeText("pr@andymartinarchitecture.com").then(() => {
+                    emailTrigger.classList.add('active');
+                    setTimeout(() => emailTrigger.classList.remove('active'), 2000);
+                }).catch(err => console.error('Copy failed', err));
+            });
+        }
+    </script>
+</body>
+</html>

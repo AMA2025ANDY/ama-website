@@ -33,8 +33,9 @@ const dataProjects = [
         category: "residential",
         year: "2024",
         location: "London",
-        type: "image",
-        filename: "3.webp",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198111272", 
         layout: "half",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
@@ -64,42 +65,19 @@ const dataProjects = [
         layout: "half",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "center" },
+            
             { type: "image", src: "3.webp", layout: "half" },
             { type: "image", src: "4.webp", layout: "half" },
             { type: "image", src: "1.webp", layout: "center" },
             { type: "image", src: "5.webp", layout: "half" },
             { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "full" },
+            { type: "image", src: "7.webp", layout: "narrow" },
+            { type: "image", src: "2.webp", layout: "narrow" },
             { type: "image", src: "8.webp", layout: "half" },
             { type: "image", src: "9.webp", layout: "half" },
         ]
     },
 
-    // 22-zevaco
-    {
-        id: "22-zevaco", 
-        title: "Zevaco",
-        category: "commercial",
-        year: "2013",
-        location: " ",
-        type: "image",
-        filename: "2.webp",
-        layout: "narrow",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "center" },
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "video", provider: "vimeo", src: "1151545677", layout: "narrow"},
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "half" },
-            
-    
-        ]
-    },
 
     //  01-cm-mia
     {
@@ -188,18 +166,16 @@ const dataProjects = [
         filename: "1150424478",
         layout: "narrow",
         content: [
-            { type: "video", provider: "vimeo", src: "1150428757", layout: "full" },
-            { type: "text", title: " ", text: " ", layout: "full" },
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "wide" },
-            { type: "image", src: "1.webp", layout: "wide" },
+            { type: "video", provider: "vimeo", src: "1198070461", layout: "half" },
+            { type: "text-file", src: "desc.txt", title: "Concept", layout: "half" },
+            { type: "image", src: "1.webp", layout: "half" },
             { type: "image", src: "2.webp", layout: "half" },
-            { type: "text", title: " ", text: " ", layout: "half" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "center" },
+            { type: "image", src: "5.webp", layout: "half" },
             { type: "image", src: "6.webp", layout: "wide" },
-            { type: "text", title: " ", text: " ", layout: "half" },
             { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "8.webp", layout: "center" },
+            { type: "image", src: "8.webp", layout: "half" },
+            
             
         ]
     },
@@ -286,6 +262,42 @@ const dataProjects = [
         ]
     },
 
+
+
+    // 22-zevaco
+    {
+        id: "22-zevaco", 
+        title: "Zevaco",
+        category: "commercial",
+        year: "2013",
+        location: " ",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198115653", 
+        sound: true, 
+        layout: "narrow",
+        content: [
+
+            
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "4.webp", layout: "half" },
+            { type: "video", provider: "vimeo", src: "1151545677", layout: "half"},
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "6.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "half" },
+            { type: "image", src: "1.webp", layout: "half" },
+            
+    
+        ]
+    },
+
+
+
+
+
+
+    
     // 08-mews02
     {
         id: "08-mews02", 

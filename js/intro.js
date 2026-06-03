@@ -1,6 +1,6 @@
 // js/intro.js
 
-// 强制刷新回顶
+// 刷新时强制回顶，重新播放开场动画
 if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
 }
@@ -9,50 +9,51 @@ window.scrollTo(0, 0);
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const logoContainer = document.getElementById('intro-logo');
-    const video = document.getElementById('hero-video'); // 获取视频元素
+    const video = document.getElementById('hero-video');
+    const skipBtn = document.getElementById('skip-intro');
 
     // 1. 锁定页面
     body.classList.add('locked');
 
-    // 点击 logo 或视频立即跳过 intro
-    const skipBtn = document.getElementById('skip-intro');
+    // 用户一旦自己滚动，立即接管：解锁 + 放弃自动滚动
+    let userTookOver = false;
+    function takeOver() {
+        userTookOver = true;
+        body.classList.remove('locked');
+    }
+    window.addEventListener('wheel', takeOver, { once: true, passive: true });
+    window.addEventListener('touchmove', takeOver, { once: true, passive: true });
+
+    // === 定义下滑函数 ===
+    function scrollDown() {
+        if (userTookOver) return;   // 用户已经自己滚了，不再自动滚动
+        body.classList.remove('locked');
+        if (skipBtn) skipBtn.style.opacity = '0';
+        window.scrollTo({
+            top: window.innerHeight,
+            behavior: 'smooth'
+        });
+        console.log("Intro finished.");
+    }
+
+    // 点击 logo / 视频 / 跳过按钮，立即跳过 intro
     if (logoContainer) logoContainer.style.pointerEvents = 'auto';
     [logoContainer, video, skipBtn].forEach(el => {
         if (el) el.addEventListener('click', scrollDown);
     });
-    
-
-    // === 定义下滑函数 ===
-    function scrollDown() {
-        body.classList.remove('locked');
-        if (skipBtn) skipBtn.style.opacity = '0';
-        window.scrollTo({
-            top: window.innerHeight, 
-            behavior: 'smooth'
-        });
-        console.log("Intro finished.");
-        
-    }
-
-
 
     // 2. 智能判断逻辑
     if (video) {
-        // 如果视频加载成功，监听 "ended" 事件 (视频播完那一刻触发)
         video.onended = () => {
             console.log("Video ended, scrolling now...");
             scrollDown();
         };
-
-        // 保险起见：如果视频太长(超过15秒)或者卡住了，强制在 15秒后跳转
-        setTimeout(scrollDown, 15000); 
-
+        setTimeout(scrollDown, 15000);
     } else {
-        // 如果没视频，3秒后直接跳
         setTimeout(scrollDown, 3000);
     }
 
-    // Logo 滚动变淡逻辑 (性能优化版)
+    // Logo 滚动变淡逻辑
     let isTicking = false;
     window.addEventListener('scroll', () => {
         if (!isTicking) {

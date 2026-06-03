@@ -159,11 +159,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 1. padding-bottom: 133.33% = 3:4 比例 (竖长方形，和图片一致)
                 // 2. transform: scale(1.4) = 放大视频，确保横屏视频填满竖屏格子，不留黑边
                 const aspectRatio = "133.33%"; 
+
+                // 只有首页封面 + data 里标了 sound:true 的，才用可控音量参数(去掉 background=1)
+                const wantSound = item.sound === true && !isModal;
+                const vimeoParams = wantSound
+                    ? `autoplay=1&loop=1&muted=1&controls=0&byline=0&title=0&badge=0&autopause=0`
+                    : `background=1&autoplay=1&loop=1&byline=0&title=0&badge=0&autopause=0`;
+                const soundFlag = wantSound ? 'data-vimeo-sound="1"' : '';
                 
                 return `
                 <div class="video-wrapper" style="position: relative; width: 100%; padding-bottom: ${aspectRatio}; height: 0; overflow: hidden; background: transparent;">
                     ${overlay}
-                    <iframe src="https://player.vimeo.com/video/${src}?background=1&autoplay=1&loop=1&byline=0&title=0&badge=0&autopause=0" 
+                    <iframe ${soundFlag} src="https://player.vimeo.com/video/${src}?${vimeoParams}" 
                         style="position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border: 0; transform: translate(-50%, -50%) scale(1.4); pointer-events: none;" 
                         frameborder="0" 
                         allow="autoplay; fullscreen" 
@@ -206,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        const coverItem = { type: project.type, src: project.filename, provider: project.provider, poster: project.poster };
+        const coverItem = { type: project.type, src: project.filename, provider: project.provider, poster: project.poster, sound: project.sound };
         item.innerHTML = generateMediaHTML(coverItem, project.id, false);
         container.appendChild(item);
 
@@ -269,6 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalBody.innerHTML = htmlContent;
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        history.replaceState(null, '', `?id=${project.id}`);
 
         const recalculateModalLayout = () => {
             const items = document.querySelectorAll('.modal-item');
@@ -296,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // === 7. 辅助功能 ===
     function closeModal() {
         modal.classList.remove('active');
+        history.replaceState(null, '', window.location.pathname);
         document.body.style.overflow = '';
         if (activeGridItem) {
             activeGridItem.classList.remove('tearing');
@@ -337,8 +346,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // 初始化
     const params = new URLSearchParams(window.location.search);
     const filterType = params.get('filter');
+    const directId = params.get('id');
     if (filterType) setTimeout(() => filterProjects(filterType), 50);
     else setTimeout(resizeAllGridItems, 200);
+
+    // 如果网址带 ?id=xxx，自动弹开对应项目
+    if (directId) {
+        const target = projectsData.find(p => p.id === directId);
+        if (target) setTimeout(() => openModal(target), 300);
+    }
 
     function resizeGridItem(item) {
         if (container.classList.contains('grid-mode')) return;
@@ -363,6 +379,48 @@ document.addEventListener("DOMContentLoaded", () => {
              if (getComputedStyle(allItems[x]).display !== 'none') resizeGridItem(allItems[x]);
         }
     }
+
+    // === Vimeo 悬停出声（淡入淡出 + 同时只响一个）===
+    let currentSoundPlayer = null;
+    let fadeTimer = null;
+
+    function fadeVolume(player, from, to, ms) {
+        if (fadeTimer) clearInterval(fadeTimer);
+        const steps = 15, stepTime = ms / steps;
+        let i = 0;
+        fadeTimer = setInterval(() => {
+            i++;
+            const v = from + (to - from) * (i / steps);
+            player.setVolume(Math.max(0, Math.min(1, v)));
+            if (i >= steps) { clearInterval(fadeTimer); fadeTimer = null; }
+        }, stepTime);
+    }
+
+    function initVimeoSound() {
+        if (typeof Vimeo === 'undefined') return; // SDK 没加载就跳过
+        const frames = document.querySelectorAll('iframe[data-vimeo-sound="1"]');
+        frames.forEach(frame => {
+            const player = new Vimeo.Player(frame);
+            player.setVolume(0);
+            const wrapper = frame.closest('.waterfall-item');
+            if (!wrapper) return;
+
+            wrapper.addEventListener('mouseenter', () => {
+                if (currentSoundPlayer && currentSoundPlayer !== player) {
+                    fadeVolume(currentSoundPlayer, 1, 0, 300);
+                }
+                currentSoundPlayer = player;
+                fadeVolume(player, 0, 1, 400);
+            });
+            wrapper.addEventListener('mouseleave', () => {
+                fadeVolume(player, 1, 0, 400);
+                if (currentSoundPlayer === player) currentSoundPlayer = null;
+            });
+        });
+    }
+
+    // 等首页格子渲染完再初始化（视频加载慢就调大这个数字）
+    setTimeout(initVimeoSound, 800);
 
     window.addEventListener("resize", debounce(resizeAllGridItems, 100));
 });
