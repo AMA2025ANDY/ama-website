@@ -14,15 +14,27 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. 锁定页面
     body.classList.add('locked');
 
+    // 点击 logo 或视频立即跳过 intro
+    const skipBtn = document.getElementById('skip-intro');
+    if (logoContainer) logoContainer.style.pointerEvents = 'auto';
+    [logoContainer, video, skipBtn].forEach(el => {
+        if (el) el.addEventListener('click', scrollDown);
+    });
+    
+
     // === 定义下滑函数 ===
     function scrollDown() {
         body.classList.remove('locked');
+        if (skipBtn) skipBtn.style.opacity = '0';
         window.scrollTo({
             top: window.innerHeight, 
             behavior: 'smooth'
         });
         console.log("Intro finished.");
+        
     }
+
+
 
     // 2. 智能判断逻辑
     if (video) {

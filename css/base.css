@@ -4,7 +4,7 @@
     /* 定义全局变量，想换颜色改这里就行 */
     --bg-color: #f4f4f4;
     --text-color: #1a1a1a;
-    --font-main: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --font-main: 'Quicksand', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     --gap: 20px;
 }
 
