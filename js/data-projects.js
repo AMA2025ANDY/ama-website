@@ -26,32 +26,7 @@
 // =====================================================================
 
 const dataProjects = [
-    // 14-twisted-house
-    {
-        id: "14-twisted-house", 
-        title: "Twisted House",
-        category: "residential",
-        year: "2024",
-        location: "London",
-        type: "video",
-        provider: "vimeo",
-        filename: "1198111272", 
-        layout: "half",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "full" },
-            { type: "image", src: "8.webp", layout: "half" },
-            { type: "image", src: "9.webp", layout: "half" },
-            { type: "image", src: "10.webp", layout: "full" },
-            { type: "image", src: "11.webp", layout: "full" },
-        ]
-    },
+    
 
     // 15-cm-soho
     {
@@ -66,18 +41,18 @@ const dataProjects = [
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
             
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "1.webp", layout: "center" },
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "image", src: "4.webp", layout: "full" },
             { type: "image", src: "5.webp", layout: "half" },
             { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "narrow" },
-            { type: "image", src: "2.webp", layout: "narrow" },
+            { type: "image", src: "7.webp", layout: "half" },
+            { type: "image", src: "2.webp", layout: "half" },
             { type: "image", src: "8.webp", layout: "half" },
-            { type: "image", src: "9.webp", layout: "half" },
+            { type: "image", src: "9.webp", layout: "full" },
         ]
     },
 
+    
 
     //  01-cm-mia
     {
@@ -90,14 +65,14 @@ const dataProjects = [
         filename: "main.webp", 
         layout: "half", 
         content: [
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "center" },
-            { type: "image", src: "4.webp", layout: "wide" },
-            { type: "image", src: "2.webp", layout: "half" },
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
             { type: "image", src: "7.webp", layout: "half" },
-            { type: "text", title: " ", text: " ", layout: "half" },
-            { type: "image", src: "3.webp", layout: "full" },         
+            { type: "image", src: "4.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "image", src: "1.webp", layout: "full" },         
         ]
     },
 
@@ -133,6 +108,35 @@ const dataProjects = [
         ]
     },
 
+// 14-twisted-house
+    {
+        id: "14-twisted-house", 
+        title: "Twisted House",
+        category: "residential",
+        year: "2024",
+        location: "London",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198402727", 
+        sound: true, 
+        layout: "half",
+        content: [
+            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "4.webp", layout: "half" },
+            { type: "image", src: "1.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "6.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "full" },
+            { type: "image", src: "8.webp", layout: "half" },
+            { type: "image", src: "9.webp", layout: "half" },
+            { type: "image", src: "10.webp", layout: "full" },
+            { type: "image", src: "11.webp", layout: "full" },
+        ]
+    },
+
+
     // 03-perfhouse
     {
         id: "03-perfhouse", 
@@ -144,13 +148,12 @@ const dataProjects = [
         filename: "main.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "text", title: " ", text: " ", layout: "half" },
+            { type: "image", src: "2.webp", layout: "half" },  
+            { type: "text-file", src: "desc02.txt", title: " ", layout: "half" },            
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "half" },  
-            { type: "image", src: "main.webp", layout: "center" },
+            { type: "image", src: "main.webp", layout: "full" },
         ]
     },
 
@@ -163,18 +166,20 @@ const dataProjects = [
         location: "London",
         type: "video",
         provider: "vimeo",
-        filename: "1150424478",
-        layout: "narrow",
+        filename: "1198070461",
+        sound:false,
+        layout: "half",
         content: [
-            { type: "video", provider: "vimeo", src: "1198070461", layout: "half" },
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "half" },
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "poster.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "half" },
             { type: "image", src: "1.webp", layout: "half" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "full " },
             { type: "image", src: "2.webp", layout: "half" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "wide" },
-            { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "8.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "full" },
+            { type: "image", src: "8.webp", layout: "full" },
+            { type: "image", src: "6.webp", layout: "full" },
             
             
         ]
@@ -183,7 +188,7 @@ const dataProjects = [
     // 04-mash02
     {
         id: "04-mash02", 
-        title: "Mash02",
+        title: "Mash 02",
         category: "commercial",
         year: "2024",
         location: "Great Portland Street, London",
@@ -191,10 +196,10 @@ const dataProjects = [
         filename: "main.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "wide" },
-            { type: "image", src: "2.webp", layout: "narrow" },
-            { type: "image", src: "3.webp", layout: "narrow" },
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
             { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },  
             { type: "image", src: "main.webp", layout: "full" },
             { type: "text-file", src: "desc03.txt", title: " ", layout: "full" },
@@ -204,19 +209,22 @@ const dataProjects = [
     // 05-mews01
     {
         id: "05-mews01", 
-        title: "Mews01",
+        title: "Mews 01",
         category: "residential",
         year: "2018",
         location: "Holland Park, London",
-        type: "image",
-        filename: "main.webp",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198452953",
+        sound:true,
         layout: "half",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "wide" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "1.webp", layout: "full" },
             { type: "text", title: " ", text: " ", layout: "half" },
             { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "3.webp", layout: "narrow" },
+            { type: "image", src: "3.webp", layout: "wide" },
+            { type: "image", src: "5.webp", layout: "center" },
             { type: "image", src: "main.webp", layout: "full" },
         ]
     },
@@ -233,13 +241,14 @@ const dataProjects = [
         filename: "1150455394", 
         layout: "narrow",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Award", layout: "full" }, 
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
             { type: "text-file", src: "desc02.txt", title: "Concept", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "text-file", src: "desc03.txt", title: " ", layout: "full" },
             { type: "image", src: "2.webp", layout: "half" },
-            { type: "text-file", src: "desc03.txt", title: " ", layout: "half" },
-            { type: "image", src: "4.webp", layout: "center" },
+            { type: "image", src: "4.webp", layout: "half" },
+           
         ]
     },
 
@@ -254,11 +263,12 @@ const dataProjects = [
         filename: "main.webp",
         layout: "wide",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Award", layout: "full" }, 
-            { type: "text-file", src: "desc02.txt", title: "Concept", layout: "full" },
-            { type: "image", src: "1.webp", layout: "wide" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "2.webp", layout: "half" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
+            { type: "image", src: "1.webp", layout: "full" },
+            { type: "image", src: "main.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "full" },
         ]
     },
 
@@ -309,12 +319,13 @@ const dataProjects = [
         filename: "1.webp",
         layout: "center",
         content: [
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "wide" },
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "4.webp", layout: "full" },
             { type: "image", src: "2.webp", layout: "center" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "center" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
+            { type: "image", src: "5.webp", layout: "full" },
+            { type: "image", src: "1.webp", layout: "full" },
         ]
     },
 
@@ -329,7 +340,7 @@ const dataProjects = [
         filename: "1.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "full" }, 
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "wide" },
             { type: "image", src: "2.webp", layout: "center" },
             { type: "image", src: "3.webp", layout: "half" },
@@ -349,7 +360,7 @@ const dataProjects = [
         filename: "5.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
             { type: "image", src: "2.webp", layout: "full" },
             { type: "image", src: "3.webp", layout: "full" },
@@ -367,16 +378,21 @@ const dataProjects = [
         category: "residential",
         year: "2014",
         location: "Notting Hill Gate, London",
-        type: "image",
-        filename: "1.webp",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198477919", 
         layout: "half",
         content: [
-            { type: "text-file", src: "desc.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "full" },
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            
             { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "1.webp", layout: "half" },
             { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "center" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "6.webp", layout: "full" },
+            
         ]
     },
 
@@ -391,11 +407,13 @@ const dataProjects = [
         filename: "1.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "wide" }, 
-            { type: "image", src: "2.webp", layout: "narrow" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "4.webp", layout: "full" },
+            { type: "text-file", src: "desc01.txt", title: "Brief",  layout: "full" },
+            
             { type: "image", src: "5.webp", layout: "full" },
+            { type: "image", src: "4.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "full" },
             
         ]
     },
@@ -408,12 +426,15 @@ const dataProjects = [
         year: "2017",
         location: "Somerset House, The Strand, London",
         type: "image",
-        filename: "5.webp",
+        filename: "3.webp",
         layout: "narrow",
         content: [
-            { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            
             { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "5.webp", layout: "full" },
+            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
+            { type: "image", src: "6.webp", layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },            
         ]
     },
@@ -447,12 +468,13 @@ const dataProjects = [
         location: "Claude",
         type: "video",
         provider: "vimeo",
-        filename: "1151037623",
-        layout: "narrow",
+        filename: "1198411168",
+        sound: true, 
+        layout: "half",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "full" },
             { type: "image", src: "5.webp", layout: "full" },    
             { type: "image", src: "4.webp", layout: "full" },
                  
@@ -469,7 +491,7 @@ const dataProjects = [
         type: "video",
         provider: "vimeo",
         filename: "1151028578",
-        layout: "narrow",
+        layout: "half",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
             { type: "image", src: "2.webp", layout: "half" },

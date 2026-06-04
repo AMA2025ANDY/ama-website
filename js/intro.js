@@ -48,7 +48,11 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Video ended, scrolling now...");
             scrollDown();
         };
-        setTimeout(scrollDown, 15000);
+        // 保险：按视频真实时长 + 0.5 秒自动滚（读不到时长就退回 8 秒）
+        video.onloadedmetadata = () => {
+            const ms = isFinite(video.duration) ? (video.duration * 1000) + 500 : 8000;
+            setTimeout(scrollDown, ms);
+        };
     } else {
         setTimeout(scrollDown, 3000);
     }

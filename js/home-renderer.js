@@ -1,4 +1,16 @@
-// js/home-renderer.js (Upgrade: 强制竖屏比例 + 完美对齐)
+// =====================================================================
+//  js/home-renderer.js
+// =====================================================================
+//  首页瀑布流渲染 + 项目弹窗(modal) + 分类筛选 + 鼠标跟随器
+//  + Vimeo 悬停出声 + 网址同步(?id=) 的总控脚本。
+//
+//  常用可调点速查:
+//   • 文字粗细: data.js 文字块加 bold:true → 该段用 700 粗体
+//               (样式在 home.css 的 .text-content.text-bold)
+//   • 视频出声: data.js 视频项加 sound:true → 首页封面悬停出声
+//   • Vimeo 出声初始化延迟: 搜 initVimeoSound 那行的 800(视频慢就调大)
+//   • 弹窗高度重算时机: 搜 recalculateModalLayout 的 50/300/1000
+// =====================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById('projects-container');
@@ -242,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (project.content && project.content.length > 0) {
             for (const item of project.content) {
                 if (typeof item === 'object' && item.type === 'text-file') {
+                    // 外部 txt 文字块。加 bold:true 可让这段用 700 粗体（见 home.css 的 .text-bold）
                     const txtPath = `${ASSET_BASE}/assets/projects/${project.id}/${item.src}`;
                     let textData = '';
                     try {
@@ -253,14 +266,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     htmlContent += `
                         <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block">
                             ${item.title ? `<div class="text-title">${escapeHTML(item.title)}</div>` : ''}
-                            <div class="text-content">${escapeHTML(textData)}</div>
+                            <div class="text-content ${item.bold ? 'text-bold' : ''}">${escapeHTML(textData)}</div>
                         </div>`;
                 }
                 else if (typeof item === 'object' && item.type === 'text') {
+                    // 直接写在 data.js 里的文字块。同样支持 bold:true
                     htmlContent += `
                         <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block">
                             ${item.title ? `<div class="text-title">${escapeHTML(item.title)}</div>` : ''}
-                            ${item.text ? `<div class="text-content">${escapeHTML(item.text)}</div>` : ''}
+                            ${item.text ? `<div class="text-content ${item.bold ? 'text-bold' : ''}">${escapeHTML(item.text)}</div>` : ''}
                         </div>`;
                 }
                 else if (typeof item === 'object') {
@@ -278,18 +292,19 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = 'hidden';
         history.replaceState(null, '', `?id=${project.id}`);
 
-        const recalculateModalLayout = () => {
+       const recalculateModalLayout = () => {
             const items = document.querySelectorAll('.modal-item');
             items.forEach(item => {
                 const grid = document.querySelector('.modal-waterfall-container');
                 if(!grid) return;
 
-                const contentHeight = item.scrollHeight;
+                // 🌟 修复 1：改用 getBoundingClientRect，获取包含 padding 的最精确物理高度
+                const contentHeight = item.getBoundingClientRect().height;
                 if(contentHeight === 0) return;
 
                 let extraBuffer = 0;
                 if (item.classList.contains('project-text-block')) {
-                    extraBuffer = 50; 
+                    extraBuffer = 0; // 给文字底部留出充足的安全留白
                 }
                 
                 item.style.gridRowEnd = "span " + Math.ceil(contentHeight + extraBuffer);
@@ -299,6 +314,14 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(recalculateModalLayout, 50);
         setTimeout(recalculateModalLayout, 300);
         setTimeout(recalculateModalLayout, 1000);
+
+        // 🌟 修复 2（绝杀）：监听浏览器字体加载，等自定义字体全部渲染完后，再算最后一次！
+        if (document.fonts) {
+            document.fonts.ready.then(() => {
+                // 加 100ms 延迟确保浏览器已经完成了重绘
+                setTimeout(recalculateModalLayout, 100);
+            });
+        }
     }
 
     // === 7. 辅助功能 ===
@@ -420,7 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 等首页格子渲染完再初始化（视频加载慢就调大这个数字）
-    setTimeout(initVimeoSound, 800);
+    setTimeout(initVimeoSound, 2000);
 
     window.addEventListener("resize", debounce(resizeAllGridItems, 100));
 });

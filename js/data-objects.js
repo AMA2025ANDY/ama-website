@@ -36,7 +36,7 @@ const dataObjects = [
         year: "2010",
         type: "image", filename: "main.webp", layout: "narrow",
         content: [
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "wide" }, 
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" }, 
             { type: "image", src: "main.webp", layout: "half" },
             { type: "image", src: "2.webp", layout: "half" },
         ]
@@ -74,7 +74,7 @@ const dataObjects = [
         title: "Gumpy Loafer",
         category: "objects", // 🔴 对应 filter=objects
         year: "1990",
-        type: "image", filename: "2.webp", layout: "narrow",
+        type: "image", filename: "1.webp", layout: "narrow",
         content: [
             // { type: "text-file", src: "desc01.txt", title: " ", layout: "wide" }, 
             { type: "image", src: "1.webp", layout: "half" },

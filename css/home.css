@@ -76,7 +76,7 @@
 .fixed-navbar.visible { opacity: 1; transform: translateY(0); pointer-events: all; }
 
 .fixed-navbar a { 
-    text-decoration: none; color: #ffffff; 
+    text-decoration: none; color: #F1F0EA;; 
     font-family: 'Times New Roman', Times, serif; 
     font-weight: 700; 
     
@@ -195,7 +195,7 @@ body:has(.grid-mode) .dropdown-content a {
 }
 .contact-info p, .contact-info .contact-email, .contact-info .contact-header {
     font-family: 'Times New Roman', Times, serif; font-size: clamp(1.1rem, 2.5vw, 1.6rem); font-weight: 700; font-style: normal;
-    color: #ffffff; opacity: 1; margin: 0; text-decoration: none; white-space: nowrap; line-height: 1.2; letter-spacing: -0.5px; border-bottom: none;
+    color: #F1F0EA;; opacity: 1; margin: 0; text-decoration: none; white-space: nowrap; line-height: 1.2; letter-spacing: -0.5px; border-bottom: none;
 }
 
 /* === 8. 邮箱点击复制样式 === */
@@ -203,7 +203,7 @@ body:has(.grid-mode) .dropdown-content a {
 .email-copy-wrapper:hover .contact-email { font-style: italic; text-decoration: underline; opacity: 0.8; }
 .copy-tip {
     position: absolute; bottom: 100%; left: 70%; transform: translateX(-50%) translateY(10px);
-    background-color: #ffffff; color: #000000; padding: 4px 8px; border-radius: 4px;
+    background-color: #F1F0EA;; color: #000000; padding: 4px 8px; border-radius: 4px;
     font-size: 0.75rem; font-family: 'Helvetica Neue', sans-serif; font-weight: bold;
     pointer-events: none; opacity: 0; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -234,12 +234,26 @@ body:has(.grid-mode) .dropdown-content a {
     transform: scale(0.98);
 }
 
+/* === 手机端：默认瀑布流改单列竖排 === */
+@media (max-width: 768px) {
+    .waterfall-container:not(.grid-mode) {
+        display: flex;
+        flex-direction: column;
+    }
+    .waterfall-container:not(.grid-mode) .waterfall-item {
+        width: 100% !important;
+        grid-column: auto !important;
+        grid-row-end: auto !important;
+    }
+}
+
 /* === 10. 弹窗专用样式 (Updated: Responsive Typography + Layout) === */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-    z-index: 9999; display: flex; justify-content: center; align-items: center;
+    z-index: 9999; display: block;
     opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
 }
+
 .modal-overlay.active { opacity: 1; pointer-events: all; }
 
 .modal-backdrop {
@@ -250,13 +264,22 @@ body:has(.grid-mode) .dropdown-content a {
 }
 
 .modal-content {
-    position: relative; width: 90vw; height: 90vh; background: #fff;
-    overflow-y: auto; padding: 0; 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-    transform: translateY(20px); 
+    position: absolute; 
+    bottom: 0; 
+    left: 0;
+    width: 100%;          /* 🌟 关键新增：让弹窗占满整宽 */
+    height: 95vh;        /* 🌟 关键新增：让弹窗占满整高（如果是半屏可以设为 80vh 或 90vh） */
+    background: #fff;
+    overflow-y: auto; 
+    padding: 0;
+    box-shadow: 0 -20px 50px rgba(0,0,0,0.1);
+    transform: translateY(20px);
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    scrollbar-width: none; -ms-overflow-style: none;
+    scrollbar-width: none; 
+    -ms-overflow-style: none;
 }
+
+
 .modal-content::-webkit-scrollbar { display: none; }
 .modal-overlay.active .modal-content { transform: translateY(0); }
 
@@ -269,61 +292,70 @@ body:has(.grid-mode) .dropdown-content a {
 .close-btn:hover { text-decoration: underline; }
 
 /* --- 弹窗头部与标题 --- */
-.modal-project-header { padding: 100px 5vw 40px; max-width: 100%; }
+.modal-project-header { padding: 100px 5vw 10px; max-width: 100%; }
 
 .modal-title { 
-    font-family: 'Times New Roman', serif; 
+    font-family: 'Stack Sans Headline', sans-serif;   /* 无衬线 */
     font-weight: 700; 
+    text-transform: uppercase;              /* 全大写 */
+    letter-spacing: 0.5px;
     margin-bottom: 10px; 
-    line-height: 1; 
+    line-height: 1.1; 
     
-    /* 🌟 标题缩放：手机 2rem -> 电脑 4.5rem */
-    font-size: clamp(2rem, 6vw, 4.5rem);
+    /* mesura 风格：标题小而精，不再巨大 */
+    font-size: clamp(3rem, 4vw, 5rem);
 }
 
 .modal-meta { 
-    font-family: 'Helvetica Neue', sans-serif; 
+    font-family: 'Stack Sans Headline', sans-serif; 
     
-    /* 🌟 副标题缩放 */
-    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    font-size: clamp(1rem, 1.2vw, 1rem);
     
-    color: #666; text-transform: uppercase; letter-spacing: 1px; 
-    display: flex; gap: 20px; 
+    color: #000; text-transform: uppercase; letter-spacing: 1px; 
+    display: flex; gap: 40px; 
 }
 
 .modal-waterfall-container { 
     display: grid; 
     grid-template-columns: repeat(12, 1fr); 
     grid-auto-rows: 1px; 
-    padding-bottom: 100px; 
+    padding-bottom: 0px; 
     align-items: start; 
 }
 
 /* --- 文本块样式 (Text Layout) --- */
 .project-text-block {
-    padding: 20px 5vw; 
+    padding: 5px 5vw 40px 5vw; 
     display: flex; flex-direction: column; justify-content: center;
 }
 
 .text-title {
-    font-family: 'Times New Roman', serif; 
+    font-family: 'Stack Sans Headline', sans-serif;   /* 小标题改无衬线 */
     font-weight: 700; 
     margin-bottom: 15px; 
     color: #000;
     
-    /* 🌟 文本标题缩放 */
-    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
 }
 
 .text-content {
-    font-family: 'Helvetica Neue', sans-serif; 
+    font-family: 'Lora', serif;             /* 正文改衬线 */
     
-    /* 🌟 正文缩放：最小 1rem (16px) 保证可读性 */
     font-size: clamp(1rem, 1.5vw, 1.15rem);
     
     line-height: 1.6; 
-    color: #333; 
+    color: #555;                            /* 颜色调浅一点 */
+    font-weight: 400;                       /* 默认常规 */
     white-space: pre-line; /* 保留txt里的换行 */
+}
+
+.text-content.text-bold {
+    font-weight: 400; /* DM Serif Display 本身分量就很足，用 400 刚刚好 */
+    font-family: 'DM Serif Display', serif; /* 换成你的新宠 */
+    font-size: clamp(1.3rem, 2vw, 1.6rem); /* 稍微调大了一点点基准字号，让这款字体展现细节 */
+    color: #000;
+    line-height: 1.35;
+    letter-spacing: 0; /* 这款字体本身设计得很紧凑，不需要额外收紧了 */
 }
 
 /* 弹窗内禁止悬停缩放效果 */
@@ -361,9 +393,9 @@ body:has(.grid-mode) .dropdown-content a,
 body:has(.grid-mode) .contact-info p,
 body:has(.grid-mode) .contact-info .contact-email,
 body:has(.grid-mode) .contact-info .contact-header {
-    mix-blend-mode: difference !important; color: #ffffff !important; opacity: 1 !important;
+    mix-blend-mode: difference !important; color: #F1F0EA !important; opacity: 1 !important;
 }
-body:has(.grid-mode) .copy-tip { background-color: #ffffff !important; color: #000000 !important; }
+body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #000000 !important; }
 
 /* === 13. 动效 === */
 .waterfall-item.fading{opacity:0;transition:opacity .3s ease}
@@ -381,7 +413,7 @@ body:has(.grid-mode) .copy-tip { background-color: #ffffff !important; color: #0
     transition: opacity 0.15s ease, transform 0.1s ease;
     will-change: transform, opacity; /* 性能优化 */
     
-    color: #ffffff;
+    color: #F1F0EA;;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
     font-weight: 700; 
     font-size: 1rem; 
@@ -400,3 +432,100 @@ body:has(.grid-mode) .copy-tip { background-color: #ffffff !important; color: #0
 }
 
 #skip-intro{position:fixed;bottom:40px;left:0;width:100%;text-align:center;z-index:50;color:#fff;font-family:'Helvetica Neue',sans-serif;font-weight:700;font-size:1rem;letter-spacing:1px;cursor:pointer;mix-blend-mode:difference;transition:opacity .3s}
+
+/* modal 图片三边贴边（仿 mesura：只有顶部标题留白）*/
+.modal-waterfall-container {
+    padding: 0 !important;           /* 下、左、右全贴边 */
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0;
+}
+.modal-waterfall-container .waterfall-item {
+    margin: 0 !important;
+}
+.modal-waterfall-container .waterfall-item img,
+.modal-waterfall-container .waterfall-item video,
+.modal-waterfall-container .waterfall-item .video-wrapper {
+    width: 100%;
+    display: block;
+}
+/* 标题区保留留白即可（不动它）*/
+
+/* === 手机端：弹窗内部图片强制单列竖排 === */
+@media (max-width: 768px) {
+    .modal-waterfall-container {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 0 !important; /* 确保左右贴边 */
+    }
+    
+    .modal-waterfall-container .waterfall-item {
+        width: 100% !important;
+        grid-column: auto !important;
+        grid-row-end: auto !important; /* 强行覆盖掉 JS 算出来的瀑布流高度 */
+        margin-bottom: 30px !important; /* 给上下相邻的图片加一点透气的间距 */
+    }
+}
+
+/* === 右下角联系表单浮窗 === */
+#contact-popup{
+    position:fixed; bottom:24px; right:24px; z-index:8000;
+    width:min(380px,90vw); background:rgba(241,240,234,0.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    padding:28px 28px 22px; box-shadow:0 12px 40px rgba(0,0,0,.18);
+    font-family:'Lora',serif; color:#222;
+    transform:translateY(20px); opacity:0; pointer-events:none;
+    transition:opacity .4s ease, transform .4s ease;
+}
+#contact-popup.show{ opacity:1; transform:translateY(0); pointer-events:all; }
+#contact-popup .cp-header { margin-bottom: 20px; padding: 0; text-align: left; border: none !important;}
+
+#contact-popup .cp-title{
+    display:block;
+    font-family:'Stack Sans Headline',sans-serif; font-weight:700;
+    font-size:1.05rem; margin-bottom:10px;
+}
+
+
+
+#contact-popup .cp-sub{
+    font-family:'Lora',serif; font-size:.92rem; line-height:1.5; color:#444;
+    text-align:left; margin:0; padding:0;
+}
+
+#contact-popup .cp-header strong{ font-family:'Stack Sans Headline',sans-serif; }
+
+
+#contact-popup input, #contact-popup textarea {
+    width: 100%; 
+    border: none !important; /* 强制移除所有边框 */
+    background: transparent;
+    padding: 8px 0; 
+    margin-bottom: 10px; 
+    font-family: 'Lora', serif; 
+    font-size: .80rem;
+    color: #222; 
+    outline: none; 
+    resize: none; 
+    box-sizing: border-box;
+
+    /* 关键新增：彻底清除 Safari/iOS 的默认表单样式和内阴影 */
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none !important;
+}
+
+
+#contact-popup button[type="submit"]{
+    background:none; border:none; padding:0; cursor:pointer;
+    font-family:'Stack Sans Headline',sans-serif; font-weight:700; font-size:0.8rem; color:#000;
+}
+#contact-popup button[type="submit"]:hover{ text-decoration:underline; }
+#contact-close{
+    position:absolute; top:14px; right:16px; background:none; border:none;
+    font-size:1.4rem; line-height:1; cursor:pointer; color:#000;
+}
+@media (max-width:600px){ #contact-popup{ bottom:12px; right:12px; left:12px; width:auto; } }
+
+
+@media (max-width:768px){
+    #contact-popup{ display:none !important; }
+}

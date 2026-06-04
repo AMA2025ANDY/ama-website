@@ -8,8 +8,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/home.css">
 </head>
@@ -19,11 +19,11 @@
         <img src="https://cdn.jsdelivr.net/gh/AMA2025ANDY/ama-website@main/assets/images/logo.png" alt="AMA" class="big-logo">
     </div>
 
-<div id="skip-intro">SKIP ↓</div>
+<div id="skip-intro"> </div>
 
     <div class="video-container">
         <video autoplay muted playsinline class="bg-video" id="hero-video">
-            <source src="https://cdn.jsdelivr.net/gh/AMA2025ANDY/ama-website@main/assets/videos/hero-video.mp4" type="video/mp4">
+            <source id="hero-src" type="video/mp4">
         </video>
     </div>
 
@@ -83,6 +83,22 @@
 
     <div id="cursor-follower"></div>
 
+
+    <!-- 右下角联系表单浮窗 -->
+<div id="contact-popup">
+    <button id="contact-close" aria-label="Close">&times;</button>
+    <div class="cp-header">
+    <div class="cp-sub">For collaborations, inquiries, or simply to connect, we'd be glad to hear from you.</div>
+</div>
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p style="display:none"><input name="bot-field"></p>
+        <input type="email" name="email" placeholder="Email address" required>
+        <textarea name="message" placeholder="Your message" rows="3" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
     <!-- Vimeo Player SDK（控制视频音量，用于悬停出声）-->
     <script src="https://player.vimeo.com/api/player.js"></script>
     <script src="js/data-projects.js"></script>
@@ -90,9 +106,24 @@
     <script src="js/data-resources.js"></script>
     <script src="js/data-editorial.js"></script>
     <script src="js/data.js"></script>
+    <script>
+  document.getElementById('hero-src').src = ASSET_BASE + '/assets/videos/hero-video.mp4';
+  document.getElementById('hero-video').load();
+</script>
     <script src="js/intro.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/home-renderer.js"></script>
 
+    <script>
+    // 进页面 8 秒后弹出（避开开场动画）。close 后不再弹。
+    const cp = document.getElementById('contact-popup');
+    const cpClose = document.getElementById('contact-close');
+    if (cp) {
+        setTimeout(() => cp.classList.add('show'), 8000);
+        if (cpClose) cpClose.addEventListener('click', () => cp.classList.remove('show'));
+    }
+</script>
+
 </body>
 </html>
+
