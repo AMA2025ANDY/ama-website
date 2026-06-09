@@ -47,7 +47,7 @@ const dataObjects = [
         title: "Andy",
         category: "objects", // 🔴 对应 filter=objects
         year: "1967",
-        type: "image", filename: "3.webp", layout: "half",
+        type: "image", filename: "3.webp", layout: "center",
         content: [
             // { type: "text-file", src: "desc01.txt", title: " ", layout: "wide" }, 
             { type: "image", src: "2.webp", layout: "full" },
@@ -62,7 +62,7 @@ const dataObjects = [
         title: "747 Ceiling Light",
         category: "objects", // 🔴 对应 filter=objects
         year: "1985",
-        type: "image", filename: "1.webp", layout: "center",
+        type: "image", filename: "1.webp", layout: "narrow",
         content: [
             // { type: "text-file", src: "desc01.txt", title: " ", layout: "wide" }, 
             { type: "image", src: "1.webp", layout: "full" },
@@ -81,5 +81,43 @@ const dataObjects = [
             { type: "image", src: "2.webp", layout: "half" },
         ]
     },
+
+
+    {
+        id: "obj-05-BicycleforThonet",
+        title: "Bicycle for Thonet",
+        category: "objects",
+        year: "2012",
+        type: "image", filename: "main.webp", layout: "half",
+        content: [
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "01.webp", layout: "half" },
+            { type: "image", src: "02.webp", layout: "half" },
+            { type: "image", src: "05.webp", layout: "half" },
+            { type: "text-file", src: "desc02.txt", title: "Tectonic Translation and CNC Precision", layout: "half" },
+            { type: "image", src: "03.webp", layout: "full" },
+            { type: "text-file", src: "desc03.txt", title: "Minimalist Anatomy and Fixed-Gear Logic", layout: "full" },
+            
+        ]
+    },
+
+    {
+        id: "obj-06-chottocoffeetable",
+        title: "Chotto Matte Coffee Table",
+        category: "objects",
+        year: "2014",
+        type: "image", filename: "main.webp", layout: "wide",
+        content: [
+            { type: "image", src: "01.webp", layout: "half" },
+            { type: "image", src: "02.webp", layout: "half" },
+            { type: "image", src: "05.webp", layout: "half" },
+            { type: "text-file", src: "desc02.txt", title: "Tectonic Translation and CNC Precision", layout: "half" },
+            { type: "image", src: "03.webp", layout: "full" },
+            { type: "text-file", src: "desc03.txt", title: "Minimalist Anatomy and Fixed-Gear Logic", layout: "full" },
+            
+        ]
+    },
+
+
 
 ];

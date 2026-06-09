@@ -28,6 +28,39 @@
 const dataProjects = [
     
 
+
+  //  23-mews05
+    {
+        id: "23-mews05", 
+        title: "Mews 05",
+        category: "Residential", 
+        year: "2025",
+        location: "Central London",
+        type: "image",
+        filename: "main.webp", 
+        layout: "half", 
+        content: [
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "03.webp", layout: "wide" },
+            { type: "image", src: "02.webp", layout: "narrow", matchRow: true },
+            { type: "text-file", src: "desc01.txt", title: "Circulation as a Tactile Ribbon", layout: "half" },
+            { type: "image", src: "014.webp", layout: "half" },
+            { type: "image", src: "04.webp", layout: "half" },   
+            { type: "image", src: "07.webp", layout: "full" },
+            { type: "image", src: "05.webp", layout: "wide" },
+            { type: "image", src: "06.webp", layout: "narrow" }, 
+            { type: "text-file", src: "desc02.txt", title: "Material Tension and Geological Interventions", layout: "half" },
+            { type: "image", src: "09.webp", layout: "half" },
+            { type: "image", src: "010.webp", layout: "full" },
+            { type: "image", src: "06.webp", layout: "half" },
+            { type: "image", src: "011.webp", layout: "narrow" },
+            { type: "image", src: "012.webp", layout: "narrow" },
+            { type: "image", src: "08.webp", layout: "center" },
+            { type: "image", src: "013.webp", layout: "full" },                           
+        ]
+    },
+
+
     // 15-cm-soho
     {
         id: "15-cm-soho", 
@@ -37,7 +70,7 @@ const dataProjects = [
         location: "Soho, London",
         type: "image",
         filename: "3.webp",
-        layout: "half",
+        layout: "narrow",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
             
@@ -63,20 +96,55 @@ const dataProjects = [
         location: "Miami",
         type: "image",
         filename: "main.webp", 
-        layout: "half", 
+        layout: "wide", 
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "5.webp", layout: "narrow" },
+            { type: "image", src: "1.webp", layout: "half" },
             { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
-            { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "1.webp", layout: "full" },         
+            { type: "image", src: "4.webp", layout: "wide" },
+            { type: "image", src: "3.webp", layout: "narrow", matchRow: true  },
+            { type: "image", src: "9.webp", layout: "center" },
+            { type: "image", src: "10.webp", layout: "narrow" },
+            { type: "image", src: "7.webp", layout: "narrow" },
+            { type: "image", src: "8.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "full" },
+                     
         ]
     },
 
-    // 16-cm-toronto
+ 
+
+// 14-twisted-house
+    {
+        id: "14-twisted-house", 
+        title: "Twisted House",
+        category: "residential",
+        year: "2024",
+        location: "London",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198402727", 
+        sound: true, 
+        layout: "narrow",
+        content: [
+            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "4.webp", layout: "half" },
+            { type: "image", src: "1.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "6.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "full" },
+            { type: "image", src: "8.webp", layout: "half" },
+            { type: "image", src: "9.webp", layout: "half" },
+            { type: "image", src: "10.webp", layout: "full" },
+            { type: "image", src: "11.webp", layout: "full" },
+        ]
+    },
+
+
+       // 16-cm-toronto
     {
         id: "16-cm-toronto", 
         title: "Chotto Matte Toronto",
@@ -86,11 +154,10 @@ const dataProjects = [
         type: "video",
         provider: "vimeo",
         filename: "1150994217", 
-        layout: "half",
+        layout: "center",
         content: [
             // { type: "text-file", src: "desc01.txt", title: "Award", layout: "full" }, 
             { type: "image", src: "1.webp", layout: "full" },
-            // { type: "text-file", src: "desc02.txt", title: "Concept", layout: "full" },
             { type: "image", src: "3.webp", layout: "half" },
             { type: "image", src: "4.webp", layout: "half" },
             { type: "image", src: "5.webp", layout: "half" },
@@ -105,34 +172,6 @@ const dataProjects = [
             { type: "image", src: "11.webp", layout: "half" },
             { type: "image", src: "12.webp", layout: "full" },
 
-        ]
-    },
-
-// 14-twisted-house
-    {
-        id: "14-twisted-house", 
-        title: "Twisted House",
-        category: "residential",
-        year: "2024",
-        location: "London",
-        type: "video",
-        provider: "vimeo",
-        filename: "1198402727", 
-        sound: true, 
-        layout: "half",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "full" },
-            { type: "image", src: "8.webp", layout: "half" },
-            { type: "image", src: "9.webp", layout: "half" },
-            { type: "image", src: "10.webp", layout: "full" },
-            { type: "image", src: "11.webp", layout: "full" },
         ]
     },
 
@@ -157,6 +196,35 @@ const dataProjects = [
         ]
     },
 
+      //  24-woodhouse-01
+    {
+        id: "24-woodhouse-01", 
+        title: "Wood House 01",
+        category: "Residential", 
+        year: "2025 - Ongoing",
+        location: "Central London",
+        type: "video",
+        provider: "vimeo",
+        filename: "1199715714",
+        sound:false,
+        layout: "half",
+        content: [
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "06.webp", layout: "wide" },
+            { type: "image", src: "05.webp", layout: "narrow" },
+            { type: "image", src: "01.webp", layout: "narrow" },
+            { type: "text-file", src: "desc01.txt", title: "Retaining the Facade and Building in CLT", layout: "wide" },
+            { type: "image", src: "12.webp", layout: "narrow" },
+            { type: "image", src: "14.webp", layout: "narrow", matchRow: true },
+            { type: "image", src: "08.webp", layout: "narrow" },
+            { type: "image", src: "13.webp", layout: "narrow" },
+            { type: "image", src: "17.webp", layout: "narrow" },
+            { type: "text-file", src: "desc02.txt", title: "Ten Days to Frame", layout: "wide" },
+            { type: "image", src: "16.webp", layout: "center" },
+            
+        ]
+    },
+
     // 02-beachhouse
     {
         id: "02-beachhouse",
@@ -168,7 +236,7 @@ const dataProjects = [
         provider: "vimeo",
         filename: "1198070461",
         sound:false,
-        layout: "half",
+        layout: "narrow",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "poster.webp", layout: "full" },
@@ -190,21 +258,24 @@ const dataProjects = [
         id: "04-mash02", 
         title: "Mash 02",
         category: "commercial",
-        year: "2024",
+        year: "1998",
         location: "Great Portland Street, London",
         type: "image",
         filename: "main.webp",
-        layout: "half",
+        layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "1.webp", layout: "wide" },
-            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "1.webp", layout: "narrow" },
+            { type: "image", src: "2.webp", layout: "half" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },  
-            { type: "image", src: "main.webp", layout: "full" },
+            { type: 'flipbook', pages: ['mag-00.webp', 'mag-01.webp', 'mag-02.webp'], layout: 'full' },
+            { type: "text-file", src: "desc02.txt", title: " ", layout: "half" },
+            { type: "image", src: "main.webp", layout: "half" },
             { type: "text-file", src: "desc03.txt", title: " ", layout: "full" },
         ]
     },
+
+
 
     // 05-mews01
     {
@@ -215,7 +286,7 @@ const dataProjects = [
         location: "Holland Park, London",
         type: "video",
         provider: "vimeo",
-        filename: "1198452953",
+        filename: "1199452040",
         sound:true,
         layout: "half",
         content: [
@@ -261,14 +332,17 @@ const dataProjects = [
         location: "London",
         type: "image",
         filename: "main.webp",
-        layout: "wide",
+        layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
+            { type: "image", src: "4.webp", layout: "half" },
             { type: "image", src: "main.webp", layout: "full" },
             { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "narrow" },
+            { type: "image", src: "5.webp", layout: "full" },
+            { type: "image", src: "6.webp", layout: "half" },
         ]
     },
 
@@ -338,7 +412,7 @@ const dataProjects = [
         location: "Notting Hill Gate, London",
         type: "image",
         filename: "1.webp",
-        layout: "half",
+        layout: "narrow",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "wide" },
@@ -358,7 +432,7 @@ const dataProjects = [
         location: "Thessaloniki, Greece",
         type: "image",
         filename: "5.webp",
-        layout: "half",
+        layout: "full",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
@@ -405,7 +479,7 @@ const dataProjects = [
         location: "London",
         type: "image",
         filename: "1.webp",
-        layout: "half",
+        layout: "narrow",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "3.webp", layout: "full" },
@@ -427,7 +501,7 @@ const dataProjects = [
         location: "Somerset House, The Strand, London",
         type: "image",
         filename: "3.webp",
-        layout: "narrow",
+        layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             
@@ -481,29 +555,6 @@ const dataProjects = [
         ]
     },
 
-    // 18-cm-riyadh
-    {
-        id: "18-cm-riyadh", 
-        title: "Chotto Matte Riyadh",
-        category: "commercial",
-        year: "2025",
-        location: "Riyadh",
-        type: "video",
-        provider: "vimeo",
-        filename: "1151028578",
-        layout: "half",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "center" },    
-            { type: "image", src: "4.webp", layout: "full" },
-                 
-        ]
-    },
-
-
-
     // 21-ugly-house
     {
         id: "21-ugly-house", 
@@ -523,5 +574,39 @@ const dataProjects = [
             { type: "image", src: "5.webp", layout: "center" },
         ]
     },
+
+
+    // 25-isola
+    {
+        id: "25-isola", 
+        title: "ISOLA",
+        category: "commercial",
+        year: "1998",
+        location: "London",
+        type: "image",
+        filename: "01.webp",
+        layout: "wide",
+        content: [
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "06.webp", layout: "half" },
+            { type: "image", src: "02.webp", layout: "half",matchRow: true },
+            { type: "image", src: "05.webp", layout: "narrow" },
+            { type: "image", src: "04.webp", layout: "narrow" },
+            { type: "image", src: "01.webp", layout: "full" },
+        ]
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ];

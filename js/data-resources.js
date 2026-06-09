@@ -34,7 +34,7 @@ const dataResources = [
         title: "Residential Tower",
         category: "resources", // 🔴 filter=resources
         year: "Ongoing",
-        type: "image", filename: "1.webp", layout: "half", 
+        type: "image", filename: "1.webp", layout: "center", 
         content: [
             { type: "text-file", src: "desc.txt", title: "Concept", layout: "wide" }, 
             { type: "image", src: "1.webp", layout: "full" },

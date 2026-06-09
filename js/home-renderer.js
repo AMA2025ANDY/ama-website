@@ -198,6 +198,22 @@ document.addEventListener("DOMContentLoaded", () => {
             const path = `${ASSET_BASE}/assets/projects/${projectId}/${src}`;
             return `<div class="video-wrapper"><video autoplay muted loop playsinline ${poster?`poster="${poster}"`:''} style="width:100%; display:block;" class="${isModal?'modal-media':''}"><source src="${path}" type="video/mp4"></video></div>`;
         }
+
+      if (item.type === 'flipbook') {
+            const urls = (item.pages || []).map(f =>
+                `${ASSET_BASE}/assets/projects/${projectId}/${f}`
+            );
+            const fbId = 'flipbook-' + Math.random().toString(36).slice(2, 9);
+            return `
+            <div class="flipbook-wrap">
+                <div class="flipbook" id="${fbId}" data-flipbook data-pages='${JSON.stringify(urls)}'></div>
+                <div class="fb-nav">
+                    <button class="fb-prev" type="button" aria-label="Previous">‹</button>
+                    <button class="fb-next" type="button" aria-label="Next">›</button>
+                </div>
+            </div>`;
+        }
+
         return '';
     }
 
@@ -206,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const item = document.createElement('div');
         item.classList.add('waterfall-item');
         item.setAttribute('data-category', project.category);
+        if (project.matchRow) item.setAttribute('data-match-row', '1');
         item.setAttribute('data-title', project.title); 
 
         const layoutClass = `layout-${project.layout || 'half'}`;
@@ -242,9 +259,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // === 6. 弹窗逻辑 ===
     async function openModal(project) {
         let htmlContent = `
+            <div class="modal-topbar">
+                <div class="modal-topbar-inner">
+                    <h1 class="modal-title">${project.title}</h1>
+                </div>
+            </div>
             <div class="modal-project-header">
-                <h1 class="modal-title">${project.title}</h1>
                 <div class="modal-meta">
+                    <span>${project.location || ''}</span>
                     <span>${project.category}</span>
                     <span>${project.year}</span>
                 </div>
@@ -278,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>`;
                 }
                 else if (typeof item === 'object') {
-                    htmlContent += `<div class="waterfall-item modal-item layout-${item.layout || 'half'}">${generateMediaHTML(item, project.id, true)}</div>`;
+                    htmlContent += `<div class="waterfall-item modal-item layout-${item.layout || 'half'}"${item.matchRow ? ' data-match-row="1"' : ''}>${generateMediaHTML(item, project.id, true)}</div>`;
                 }
                 else if (typeof item === 'string') {
                     htmlContent += `<div class="waterfall-item modal-item layout-half">${generateMediaHTML(item, project.id, true)}</div>`;
@@ -287,33 +309,132 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         htmlContent += `</div>`;
+
+        // === RELATED：同 category 的其他项目，最多 5 个 ===
+        const related = projectsData.filter(p =>
+            p.category === project.category && p.id !== project.id
+        ).slice(0, 5);
+
+        if (related.length > 0) {
+            htmlContent += `
+                <div class="related-section">
+                    <h2 class="related-title">RELATED</h2>
+                    <div class="related-grid">`;
+            related.forEach(rel => {
+                const cover = { type: rel.type, src: rel.filename, provider: rel.provider, poster: rel.poster };
+                htmlContent += `
+                    <div class="related-item waterfall-item" data-related-id="${rel.id}" data-title="${escapeHTML(rel.title)}">
+                        ${generateMediaHTML(cover, rel.id, true)}
+                    </div>`;
+            });
+            htmlContent += `</div></div>`;
+        }
+
         modalBody.innerHTML = htmlContent;
+
+        // 点击标题：平滑滚回顶部
+        const modalTitle = modalBody.querySelector('.modal-topbar .modal-title');
+        const scrollBox = document.querySelector('.modal-content');
+        if (modalTitle && scrollBox) {
+            modalTitle.style.cursor = 'pointer';
+            modalTitle.style.pointerEvents = 'auto';   // topbar 是 pointer-events:none，标题要单独开
+            modalTitle.addEventListener('click', () => {
+                scrollBox.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+
+        const modalContent = document.querySelector('.modal-content');
+if (modalContent) {
+    modalContent.onscroll = () => {
+        if (modalContent.scrollTop > 100) {
+            modalContent.classList.add('expanded');
+        } else {
+            modalContent.classList.remove('expanded');
+        }
+    };
+}
+
+        // 把 CLOSE 按钮移进吸顶条，和标题同一行一起反相
+        const topbar = modalBody.querySelector('.modal-topbar');
+        if (topbar && closeBtn) topbar.appendChild(closeBtn);
+
+        // RELATED 点击：在当前弹窗内切换到新项目
+        modalBody.querySelectorAll('.related-item').forEach(el => {
+            el.addEventListener('click', () => {
+                const id = el.getAttribute('data-related-id');
+                const target = projectsData.find(p => p.id === id);
+                if (target) {
+                    modalBody.scrollTop = 0;
+                    openModal(target);
+                }
+            });
+        });
+
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
         history.replaceState(null, '', `?id=${project.id}`);
 
        const recalculateModalLayout = () => {
-            const items = document.querySelectorAll('.modal-item');
+            const grid = document.querySelector('.modal-waterfall-container');
+            if (!grid) return;
+            const items = Array.from(document.querySelectorAll('.modal-item'));
+
+            // 第一步：先给所有"非文字"块（图片/视频）按自身高度算行数
             items.forEach(item => {
-                const grid = document.querySelector('.modal-waterfall-container');
-                if(!grid) return;
+                if (item.classList.contains('project-text-block')) return; // 文字块稍后处理
+                const h = item.scrollHeight;
+                if (h === 0) return;
+                item.style.gridRowEnd = "span " + Math.ceil(h);
+            });
 
-                // 🌟 修复 1：改用 getBoundingClientRect，获取包含 padding 的最精确物理高度
-                const contentHeight = item.getBoundingClientRect().height;
-                if(contentHeight === 0) return;
+            // 第二步：文字块对齐到"同一视觉行里最高的图片"高度
+            items.forEach(item => {
+                if (!item.classList.contains('project-text-block')) return;
 
-                let extraBuffer = 0;
-                if (item.classList.contains('project-text-block')) {
-                    extraBuffer = 0; // 给文字底部留出充足的安全留白
+                const myTop = item.offsetTop;
+                // 找和这个文字块顶部大致对齐（同一行）的图片块，取其中最高的
+                let rowMax = 0;
+                items.forEach(other => {
+                    if (other === item) return;
+                    if (other.classList.contains('project-text-block')) return;
+                    if (Math.abs(other.offsetTop - myTop) < 50) { // 顶部差50px内算同一行
+                        rowMax = Math.max(rowMax, other.offsetHeight);
+                    }
+                });
+
+                if (rowMax > 0) {
+                    // 跟邻图等高
+                    item.style.gridRowEnd = "span " + Math.ceil(rowMax);
+                } else {
+                    // 这一行没有图片（文字独占一整行 full），就按自身高度，加点呼吸空隙
+                    item.style.gridRowEnd = "span " + Math.ceil(item.scrollHeight + 50);
                 }
-                
-                item.style.gridRowEnd = "span " + Math.ceil(contentHeight + extraBuffer);
+            });
+
+            // 第三步：带 matchRow 的图片块，也拉到同一行最高格子的高度
+            items.forEach(item => {
+                if (!item.getAttribute('data-match-row')) return;
+
+                const myTop = item.offsetTop;
+                let rowMax = 0;
+                items.forEach(other => {
+                    if (other === item) return;
+                    if (Math.abs(other.offsetTop - myTop) < 50) {
+                        rowMax = Math.max(rowMax, other.offsetHeight);
+                    }
+                });
+
+                if (rowMax > 0) {
+                    item.style.gridRowEnd = "span " + Math.ceil(rowMax);
+                }
             });
         };
 
         setTimeout(recalculateModalLayout, 50);
         setTimeout(recalculateModalLayout, 300);
         setTimeout(recalculateModalLayout, 1000);
+        setTimeout(() => initFlipbooks(modalBody), 200);
 
         // 🌟 修复 2（绝杀）：监听浏览器字体加载，等自定义字体全部渲染完后，再算最后一次！
         if (document.fonts) {
@@ -323,6 +444,46 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
+
+     // 翻书
+
+function initFlipbooks(scope) {
+        if (typeof St === 'undefined') return;
+        const books = scope.querySelectorAll('[data-flipbook]');
+        books.forEach(el => {
+            if (el.dataset.fbInit) return;
+            el.dataset.fbInit = '1';
+
+            let pages = [];
+            try { pages = JSON.parse(el.dataset.pages || '[]'); } catch (e) {}
+            if (!pages.length) return;
+
+            const pageFlip = new St.PageFlip(el, {
+                width: 400, height: 533,
+                size: 'stretch',
+                minWidth: 250, maxWidth: 600,
+                minHeight: 333, maxHeight: 800,
+                showCover: false,
+                usePortrait: window.innerWidth <= 768,   // 手机单页，桌面双页
+                flippingTime: 1000,
+                drawShadow: true,
+                maxShadowOpacity: 0.6,
+                mobileScrollSupport: true
+            });
+            pageFlip.loadFromImages(pages);   // 图片模式：canvas 渲染，软页卷曲
+
+            const wrap = el.closest('.flipbook-wrap');
+            if (wrap) {
+                const prev = wrap.querySelector('.fb-prev');
+                const next = wrap.querySelector('.fb-next');
+                if (prev) prev.addEventListener('click', () => pageFlip.flipPrev());
+                if (next) next.addEventListener('click', () => pageFlip.flipNext());
+            }
+        });
+    }
+
+
+
 
     // === 7. 辅助功能 ===
     function closeModal() {
@@ -398,9 +559,34 @@ document.addEventListener("DOMContentLoaded", () => {
     function resizeAllGridItems() {
         if (container.classList.contains('grid-mode')) return;
         const allItems = document.getElementsByClassName("waterfall-item");
+
+        // 第一步：所有格子先按自身高度正常算（保持现有瀑布流）
         for (let x = 0; x < allItems.length; x++) {
-             if (getComputedStyle(allItems[x]).display !== 'none') resizeGridItem(allItems[x]);
+            if (getComputedStyle(allItems[x]).display !== 'none') resizeGridItem(allItems[x]);
         }
+
+        // 第二步：带 data-match-row 的矮图，拉到同一行最高格子的高度
+        const grid = document.getElementsByClassName("waterfall-container")[0];
+        if (!grid) return;
+        const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows'));
+
+        const items = Array.from(allItems).filter(it => getComputedStyle(it).display !== 'none');
+        items.forEach(item => {
+            if (!item.getAttribute('data-match-row')) return;
+
+            const myTop = item.offsetTop;
+            let rowMax = 0;
+            items.forEach(other => {
+                if (other === item) return;
+                if (Math.abs(other.offsetTop - myTop) < 50) {  // 顶部差 50px 内算同一行
+                    rowMax = Math.max(rowMax, other.offsetHeight);
+                }
+            });
+
+            if (rowMax > 0) {
+                item.style.gridRowEnd = "span " + Math.ceil(rowMax / rowHeight);
+            }
+        });
     }
 
     // === Vimeo 悬停出声（淡入淡出 + 同时只响一个）===

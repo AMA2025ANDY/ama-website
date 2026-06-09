@@ -7,7 +7,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Baskervville:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/home.css">
@@ -15,12 +15,13 @@
     <style>
         body { background: #fff; color: #000; }
         .project-header { padding: 150px 20px 50px; max-width: 100%; box-sizing: border-box; }
-        .project-title { font-family: 'Times New Roman', serif; font-size: 4rem; font-weight: 700; margin-bottom: 10px; line-height: 1; }
-        .project-meta { font-family: 'Helvetica Neue', sans-serif; font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 1px; display: flex; gap: 20px; }
+        .project-title { font-family: 'Stack Sans Headline', sans-serif; font-size: clamp(3rem, 4vw, 5rem); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; line-height: 1.1; }
+        .project-meta { font-family: 'Stack Sans Headline', sans-serif; font-size: clamp(1rem, 1.2vw, 1rem); color: #000; text-transform: uppercase; letter-spacing: 1px; display: flex; gap: 40px; }
         .waterfall-container { padding-bottom: 150px; }
-        .project-text-block { padding: 40px 20px; display: flex; flex-direction: column; justify-content: center; }
-        .text-title { font-family: 'Times New Roman', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; }
-        .text-content { font-family: 'Helvetica Neue', sans-serif; font-size: 1.1rem; line-height: 1.6; color: #333; white-space: pre-line; }
+        .project-text-block { padding: 60px 5vw 40px 5vw; display: flex; flex-direction: column; justify-content: flex-start; }
+        .text-title { font-family: 'Stack Sans Headline', sans-serif; font-size: clamp(1.3rem, 2vw, 1.8rem); font-weight: 700; margin-bottom: 15px; color: #000; }
+        .text-content { font-family: 'Baskervville', serif; font-size: clamp(1rem, 1.5vw, 1.15rem); line-height: 1.6; color: #555; font-weight: 400; white-space: pre-line; }
+        .text-content.text-bold { font-family: 'Baskervville', serif; font-weight: 700; font-size: clamp(1.3rem, 2vw, 1.6rem); color: #000; line-height: 1.35; }
         .fixed-navbar { opacity: 1 !important; transform: translateY(0) !important; pointer-events: all !important; mix-blend-mode: normal !important; }
         .fixed-navbar a, .fixed-navbar > a:not(:last-child)::after { color: #000 !important; }
         .nav-dropdown-wrapper::after { color: #000 !important; }
