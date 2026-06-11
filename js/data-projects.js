@@ -29,7 +29,11 @@ const dataProjects = [
     
 
 
-  //  23-mews05
+  
+
+
+
+    //  23-mews05
     {
         id: "23-mews05", 
         title: "Mews 05",
@@ -38,7 +42,7 @@ const dataProjects = [
         location: "Central London",
         type: "image",
         filename: "main.webp", 
-        layout: "half", 
+        layout: "wide", 
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "03.webp", layout: "wide" },
@@ -61,61 +65,7 @@ const dataProjects = [
     },
 
 
-    // 15-cm-soho
-    {
-        id: "15-cm-soho", 
-        title: "Chotto Matte Soho",
-        category: "commercial",
-        year: "2022",
-        location: "Soho, London",
-        type: "image",
-        filename: "3.webp",
-        layout: "narrow",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            
-            { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "8.webp", layout: "half" },
-            { type: "image", src: "9.webp", layout: "full" },
-        ]
-    },
-
-    
-
-    //  01-cm-mia
-    {
-        id: "01-cm-mia", // 🔴 文件夹名
-        title: "Chotto Matte Miami",
-        category: "commercial", 
-        year: "2019",
-        location: "Miami",
-        type: "image",
-        filename: "main.webp", 
-        layout: "wide", 
-        content: [
-            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "5.webp", layout: "narrow" },
-            { type: "image", src: "1.webp", layout: "half" },
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
-            { type: "image", src: "4.webp", layout: "wide" },
-            { type: "image", src: "3.webp", layout: "narrow", matchRow: true  },
-            { type: "image", src: "9.webp", layout: "center" },
-            { type: "image", src: "10.webp", layout: "narrow" },
-            { type: "image", src: "7.webp", layout: "narrow" },
-            { type: "image", src: "8.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
-                     
-        ]
-    },
-
- 
-
-// 14-twisted-house
+    // 14-twisted-house
     {
         id: "14-twisted-house", 
         title: "Twisted House",
@@ -128,52 +78,32 @@ const dataProjects = [
         sound: true, 
         layout: "narrow",
         content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "full" },
-            { type: "image", src: "8.webp", layout: "half" },
-            { type: "image", src: "9.webp", layout: "half" },
-            { type: "image", src: "10.webp", layout: "full" },
-            { type: "image", src: "11.webp", layout: "full" },
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "007.webp", layout: "narrow" },
+            { type: "image", src: "08.webp", layout: "wide" },
+            { type: "image", src: "0012.webp", layout: "narrow", matchRow: true },
+             { type: "text-file", src: "desc02.txt", title: "Form and Material", layout: "half", matchRow: true  },
+            { type: "image", src: "site plan.webp", layout: "narrow"},
+           
+            
+            { type: "image", src: "04.webp", layout: "center" },
+            { type: "image", src: "011.webp", layout: "" },
+            { type: "text-file", src: "desc04.txt", title: "Bedroom and Interior", layout: "wide", matchRow: true },
+            { type: "image", src: "ground floor.webp", layout: "wide"}, 
+            { type: "image", src: "008.webp", layout: "narrow", matchRow: true}, 
+            { type: "image", src: "7.webp", layout: "half" },
+            
+            
+            
+
+           
+           
+            
+           
+     
         ]
     },
 
-
-       // 16-cm-toronto
-    {
-        id: "16-cm-toronto", 
-        title: "Chotto Matte Toronto",
-        category: "commercial",
-        year: "2018",
-        location: "Toronto, Canada",
-        type: "video",
-        provider: "vimeo",
-        filename: "1150994217", 
-        layout: "center",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Award", layout: "full" }, 
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "full" },
-            { type: "image", src: "8.webp", layout: "full" },
-            { type: "image", src: "9.webp", layout: "full" },
-            { type: "image", src: "14.webp", layout: "half" },
-            { type: "image", src: "15.webp", layout: "half" },
-            { type: "image", src: "16.webp", layout: "half" },
-            { type: "image", src: "13.webp", layout: "half" },
-            { type: "image", src: "10.webp", layout: "half" },
-            { type: "image", src: "11.webp", layout: "half" },
-            { type: "image", src: "12.webp", layout: "full" },
-
-        ]
-    },
 
 
     // 03-perfhouse
@@ -185,7 +115,7 @@ const dataProjects = [
         location: "London",
         type: "image",
         filename: "main.webp",
-        layout: "half",
+        layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
@@ -195,6 +125,9 @@ const dataProjects = [
             { type: "image", src: "main.webp", layout: "full" },
         ]
     },
+
+
+   
 
       //  24-woodhouse-01
     {
@@ -207,7 +140,7 @@ const dataProjects = [
         provider: "vimeo",
         filename: "1199715714",
         sound:false,
-        layout: "half",
+        layout: "full",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "06.webp", layout: "wide" },
@@ -252,6 +185,39 @@ const dataProjects = [
             
         ]
     },
+
+
+        // 16-cm-toronto
+    {
+        id: "16-cm-toronto", 
+        title: "Chotto Matte Toronto",
+        category: "commercial",
+        year: "2018",
+        location: "Toronto, Canada",
+        type: "video",
+        provider: "vimeo",
+        filename: "1150994217", 
+        layout: "narrow",
+        content: [
+            // { type: "text-file", src: "desc01.txt", title: "Award", layout: "full" }, 
+            { type: "image", src: "1.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "4.webp", layout: "half" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "full" },
+            { type: "image", src: "8.webp", layout: "full" },
+            { type: "image", src: "9.webp", layout: "full" },
+            { type: "image", src: "14.webp", layout: "half" },
+            { type: "image", src: "15.webp", layout: "half" },
+            { type: "image", src: "16.webp", layout: "half" },
+            { type: "image", src: "13.webp", layout: "half" },
+            { type: "image", src: "10.webp", layout: "half" },
+            { type: "image", src: "11.webp", layout: "half" },
+            { type: "image", src: "12.webp", layout: "full" },
+
+        ]
+    },
+
 
     // 04-mash02
     {
@@ -332,7 +298,7 @@ const dataProjects = [
         location: "London",
         type: "image",
         filename: "main.webp",
-        layout: "center",
+        layout: "full",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
@@ -377,7 +343,57 @@ const dataProjects = [
     },
 
 
+  // 15-cm-soho
+    {
+        id: "15-cm-soho", 
+        title: "Chotto Matte Soho",
+        category: "commercial",
+        year: "2022",
+        location: "Soho, London",
+        type: "image",
+        filename: "3.webp",
+        layout: "narrow",
+        content: [
+            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "image", src: "4.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "image", src: "6.webp", layout: "half" },
+            { type: "image", src: "7.webp", layout: "half" },
+            { type: "image", src: "2.webp", layout: "half" },
+            { type: "image", src: "8.webp", layout: "half" },
+            { type: "image", src: "9.webp", layout: "full" },
+        ]
+    },
 
+    
+
+    //  01-cm-mia
+    {
+        id: "01-cm-mia", // 🔴 文件夹名
+        title: "Chotto Matte Miami",
+        category: "commercial", 
+        year: "2019",
+        location: "Miami",
+        type: "image",
+        filename: "main.webp", 
+        layout: "wide", 
+        content: [
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
+            { type: "image", src: "5.webp", layout: "narrow" },
+            { type: "image", src: "1.webp", layout: "half" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
+            { type: "image", src: "4.webp", layout: "wide" },
+            { type: "image", src: "3.webp", layout: "narrow", matchRow: true  },
+            { type: "image", src: "9.webp", layout: "center" },
+            { type: "image", src: "10.webp", layout: "narrow" },
+            { type: "image", src: "7.webp", layout: "narrow" },
+            { type: "image", src: "8.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "full" },
+                     
+        ]
+    },
 
 
 
@@ -391,7 +407,7 @@ const dataProjects = [
         location: "Belsize Park, London",
         type: "image",
         filename: "1.webp",
-        layout: "center",
+        layout: "full",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "4.webp", layout: "full" },
@@ -415,11 +431,13 @@ const dataProjects = [
         layout: "narrow",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "1.webp", layout: "wide" },
-            { type: "image", src: "2.webp", layout: "center" },
-            { type: "image", src: "3.webp", layout: "half" },
+            { type: "image", src: "3.webp", layout: "wide" },
+            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
+            { type: "image", src: "2.webp", layout: "half" },
+            
+            { type: "image", src: "1.webp", layout: "full" },
             { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "center" },
+            { type: "text-file", src: "desc02.txt", title: " ", layout: "half" },
         ]
     },
 
@@ -533,29 +551,8 @@ const dataProjects = [
         ]
     },
 
-    // 19-claude
-    {
-        id: "19-claude", 
-        title: "Claude's",
-        category: "commercial",
-        year: "2020",
-        location: "Claude",
-        type: "video",
-        provider: "vimeo",
-        filename: "1198411168",
-        sound: true, 
-        layout: "half",
-        content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
-            { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "full" },    
-            { type: "image", src: "4.webp", layout: "full" },
-                 
-        ]
-    },
 
-    // 21-ugly-house
+       // 21-ugly-house
     {
         id: "21-ugly-house", 
         title: "Ugly House",
@@ -576,6 +573,31 @@ const dataProjects = [
     },
 
 
+
+    // 19-claude
+    {
+        id: "19-claude", 
+        title: "Claude's",
+        category: "commercial",
+        year: "2020",
+        location: "Claude",
+        type: "video",
+        provider: "vimeo",
+        filename: "1198411168",
+        sound: true, 
+        layout: "narrow",
+        content: [
+            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "3.webp", layout: "full" },
+            { type: "image", src: "5.webp", layout: "full" },    
+            { type: "image", src: "4.webp", layout: "full" },
+                 
+        ]
+    },
+
+ 
+
     // 25-isola
     {
         id: "25-isola", 
@@ -585,7 +607,7 @@ const dataProjects = [
         location: "London",
         type: "image",
         filename: "01.webp",
-        layout: "wide",
+        layout: "half",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "06.webp", layout: "half" },
