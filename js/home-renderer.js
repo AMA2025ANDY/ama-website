@@ -158,7 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // B. 对象类型数据
         if (item.type === 'image') {
-            return `<img src="${ASSET_BASE}/assets/projects/${projectId}/${item.src}" class="${isModal?'modal-media':''}" style="width:100%; display:block;" alt="Img">`;
+            // modal 里标了 cursor 的图,鼠标移上去变成指定 png 指针
+            const cursorStyle = (isModal && item.cursor)
+                ? `cursor: url('${ASSET_BASE}/assets/projects/${projectId}/${item.cursor}') 16 16, auto;`
+                : '';
+            return `<img src="${ASSET_BASE}/assets/projects/${projectId}/${item.src}" class="${isModal?'modal-media':''}" style="width:100%; display:block; ${cursorStyle}" alt="Img">`;
         }
         
         if (item.type === 'video') {
@@ -173,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const aspectRatio = "133.33%"; 
 
                 // 只有首页封面 + data 里标了 sound:true 的，才用可控音量参数(去掉 background=1)
-                const wantSound = item.sound === true && !isModal;
+                const wantSound = item.sound === true;
                 const vimeoParams = wantSound
                     ? `autoplay=1&loop=1&muted=1&controls=0&byline=0&title=0&badge=0&autopause=0`
                     : `background=1&autoplay=1&loop=1&byline=0&title=0&badge=0&autopause=0`;
@@ -286,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     } catch (err) { console.error(err); }
                     
                     htmlContent += `
-                        <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block">
+                        <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block"${item.matchRow ? ' data-match-row="1"' : ''}>
                             ${item.title ? `<div class="text-title">${escapeHTML(item.title)}</div>` : ''}
                             <div class="text-content ${item.bold ? 'text-bold' : ''}">${escapeHTML(textData)}</div>
                         </div>`;
@@ -294,9 +298,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 else if (typeof item === 'object' && item.type === 'text') {
                     // 直接写在 data.js 里的文字块。同样支持 bold:true
                     htmlContent += `
-                        <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block">
+                        <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-text-block"${item.matchRow ? ' data-match-row="1"' : ''}>
                             ${item.title ? `<div class="text-title">${escapeHTML(item.title)}</div>` : ''}
                             ${item.text ? `<div class="text-content ${item.bold ? 'text-bold' : ''}">${escapeHTML(item.text)}</div>` : ''}
+                        </div>`;
+                }
+                else if (typeof item === 'object' && item.type === 'carousel') {
+                    // 横向轮播。data.js 写法: { type:'carousel', layout:'wide', images:['01.jpg','02.jpg'] }
+                    const imgs = (item.images || []).map(src =>
+                        `<img src="${ASSET_BASE}/assets/projects/${project.id}/${src}" class="carousel-img" alt="Img">`
+                    ).join('');
+                    const dots = (item.images || []).map((_, i) =>
+                        `<span class="carousel-dot${i === 0 ? ' active' : ''}" data-i="${i}"></span>`
+                    ).join('');
+                    htmlContent += `
+                        <div class="waterfall-item modal-item layout-${item.layout || 'wide'} project-carousel" data-index="0">
+                            <div class="carousel-track">${imgs}</div>
+                            <button class="carousel-btn carousel-prev" aria-label="Prev">‹</button>
+                            <button class="carousel-btn carousel-next" aria-label="Next">›</button>
+                            <div class="carousel-dots">${dots}</div>
                         </div>`;
                 }
                 else if (typeof item === 'object') {
@@ -331,6 +351,65 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         modalBody.innerHTML = htmlContent;
+        setTimeout(() => initVimeoSound(modalBody), 600);
+        modalBody.querySelectorAll('.project-carousel').forEach(car => {
+            const track = car.querySelector('.carousel-track');
+            const dots = car.querySelectorAll('.carousel-dot');
+            const total = track.children.length;
+            if (total === 0) return;
+
+            const go = (i) => {
+                const idx = (i + total) % total;
+                car.dataset.index = idx;
+                track.style.transform = `translateX(-${idx * 100}%)`;
+                dots.forEach((d, k) => d.classList.toggle('active', k === idx));
+            };
+
+            // 自动播放：每 30 秒下一张；任何手动操作后重置计时
+            let autoTimer = null;
+            const startAuto = () => {
+                clearInterval(autoTimer);
+                autoTimer = setInterval(() => go(+car.dataset.index + 1), 30000);
+            };
+            // 手动切换的包装：切换 + 重置 30 秒
+            const goManual = (i) => { go(i); startAuto(); };
+            startAuto();
+
+            car.querySelector('.carousel-prev').addEventListener('click', () => goManual(+car.dataset.index - 1));
+            car.querySelector('.carousel-next').addEventListener('click', () => goManual(+car.dataset.index + 1));
+            dots.forEach(d => d.addEventListener('click', () => goManual(+d.dataset.i)));
+
+            // 鼠标滚轮横向切换（节流，防止一滚翻好几张）
+            let wheelLock = false;
+            car.addEventListener('wheel', (e) => {
+                if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+                e.preventDefault();
+                if (wheelLock) return;
+                wheelLock = true;
+                goManual(+car.dataset.index + (e.deltaX > 0 ? 1 : -1));
+                setTimeout(() => { wheelLock = false; }, 400);
+            }, { passive: false });
+
+            // 手机触摸滑动
+            let startX = 0, touching = false;
+            car.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                touching = true;
+            }, { passive: true });
+            car.addEventListener('touchend', (e) => {
+                if (!touching) return;
+                touching = false;
+                const dx = e.changedTouches[0].clientX - startX;
+                if (Math.abs(dx) < 40) return;
+                goManual(+car.dataset.index + (dx < 0 ? 1 : -1));
+            }, { passive: true });
+        });
+
+        modalBody.querySelectorAll('.modal-item img').forEach(img => {
+            if (img.complete) return;
+            img.addEventListener('load', () => recalculateModalLayout());
+            img.addEventListener('error', () => recalculateModalLayout());
+        });
 
         // 点击标题：平滑滚回顶部
         const modalTitle = modalBody.querySelector('.modal-topbar .modal-title');
@@ -378,6 +457,11 @@ if (modalContent) {
        const recalculateModalLayout = () => {
             const grid = document.querySelector('.modal-waterfall-container');
             if (!grid) return;
+
+            const rowHeight = parseInt(window.getComputedStyle(grid).getPropertyValue('grid-auto-rows')) || 1;
+            const rowGap = parseInt(window.getComputedStyle(grid).getPropertyValue('row-gap')) || 0;
+            const toSpan = (px) => Math.ceil((px + rowGap) / (rowHeight + rowGap));
+
             const items = Array.from(document.querySelectorAll('.modal-item'));
 
             // 第一步：先给所有"非文字"块（图片/视频）按自身高度算行数
@@ -385,7 +469,7 @@ if (modalContent) {
                 if (item.classList.contains('project-text-block')) return; // 文字块稍后处理
                 const h = item.scrollHeight;
                 if (h === 0) return;
-                item.style.gridRowEnd = "span " + Math.ceil(h);
+                item.style.gridRowEnd = "span " + toSpan(h);
             });
 
             // 第二步：文字块对齐到"同一视觉行里最高的图片"高度
@@ -393,40 +477,41 @@ if (modalContent) {
                 if (!item.classList.contains('project-text-block')) return;
 
                 const myTop = item.offsetTop;
-                // 找和这个文字块顶部大致对齐（同一行）的图片块，取其中最高的
                 let rowMax = 0;
                 items.forEach(other => {
                     if (other === item) return;
                     if (other.classList.contains('project-text-block')) return;
-                    if (Math.abs(other.offsetTop - myTop) < 50) { // 顶部差50px内算同一行
-                        rowMax = Math.max(rowMax, other.offsetHeight);
-                    }
-                });
-
-                if (rowMax > 0) {
-                    // 跟邻图等高
-                    item.style.gridRowEnd = "span " + Math.ceil(rowMax);
-                } else {
-                    // 这一行没有图片（文字独占一整行 full），就按自身高度，加点呼吸空隙
-                    item.style.gridRowEnd = "span " + Math.ceil(item.scrollHeight + 50);
-                }
-            });
-
-            // 第三步：带 matchRow 的图片块，也拉到同一行最高格子的高度
-            items.forEach(item => {
-                if (!item.getAttribute('data-match-row')) return;
-
-                const myTop = item.offsetTop;
-                let rowMax = 0;
-                items.forEach(other => {
-                    if (other === item) return;
                     if (Math.abs(other.offsetTop - myTop) < 50) {
                         rowMax = Math.max(rowMax, other.offsetHeight);
                     }
                 });
 
                 if (rowMax > 0) {
-                    item.style.gridRowEnd = "span " + Math.ceil(rowMax);
+                    item.style.gridRowEnd = "span " + toSpan(rowMax);
+                } else {
+                    item.style.gridRowEnd = "span " + toSpan(item.scrollHeight + 50);
+                }
+            });
+
+            // 第三步：带 matchRow 的图片块，对齐到同一行最高格子的底边
+            items.forEach(item => {
+                if (!item.getAttribute('data-match-row')) return;
+
+                const myTop = item.offsetTop;
+                const myBottom = myTop + item.offsetHeight;
+                let maxBottom = 0;
+                items.forEach(other => {
+                    if (other === item) return;
+                    const oTop = other.offsetTop;
+                    const oBottom = oTop + other.offsetHeight;
+                    // 视觉上有纵向重叠 = 同一行
+                    if (oTop < myBottom && oBottom > myTop) {
+                        maxBottom = Math.max(maxBottom, oBottom);
+                    }
+                });
+
+                if (maxBottom > myTop) {
+                    item.style.gridRowEnd = "span " + toSpan(maxBottom - myTop);
                 }
             });
         };
@@ -605,10 +690,11 @@ function initFlipbooks(scope) {
         }, stepTime);
     }
 
-    function initVimeoSound() {
+    function initVimeoSound(root = document) {
         if (typeof Vimeo === 'undefined') return; // SDK 没加载就跳过
-        const frames = document.querySelectorAll('iframe[data-vimeo-sound="1"]');
+        const frames = root.querySelectorAll('iframe[data-vimeo-sound="1"]:not([data-sound-init])');
         frames.forEach(frame => {
+            frame.setAttribute('data-sound-init', '1');
             const player = new Vimeo.Player(frame);
             player.setVolume(0);
             const wrapper = frame.closest('.waterfall-item');

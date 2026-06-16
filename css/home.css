@@ -699,3 +699,62 @@ body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #0
 .flipbook .stf__parent,
 .stf__parent { transform: none !important; transform-style: preserve-3d !important; }
 .modal-content { transform: none !important; }
+
+
+.project-carousel { position: relative; overflow: hidden; }
+.carousel-track {
+    display: flex;
+    transition: none;
+    width: 100%;
+}
+.carousel-img {
+    flex: 0 0 100%;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border: none;
+    background:none;
+    color: #fff;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+.project-carousel:hover .carousel-btn { opacity: 1; }
+.carousel-prev { left: 10px; }
+.carousel-next { right: 10px; }
+.carousel-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: background 0.25s;
+}
+.carousel-dot.active { background: #fff; }
+
+
+
+@media (max-width: 768px) {
+    .modal-waterfall-container .waterfall-item:has(img[src*="blank.webp"]) {
+        display: none;
+    }
+}
