@@ -101,15 +101,6 @@ const dataProjects = [
             { type: "image", src: "0013.webp", layout: "narrow"},  
             { type: "image", src: "15.webp", layout: "full"},    
             
-            
-            
-            
-            
-
-           
-           
-            
-           
      
         ]
     },
@@ -129,25 +120,27 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full", cursor: 'cursor.png' },
+            { type: "image", src: "06.webp", layout: "narrow", cursor: 'cursor.png' },
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
             { type: "image", src: "02.webp", layout: "wide", cursor: 'cursor.png' },
-            { type: "text-file", src: "The shell and the insertion.txt", title: "The shell and the insertion", layout: "narrow", matchRow: true},
-            { type: 'carousel', layout: 'wide', images: ['2.webp', '5.webp', 'main.webp']},
-            { type: "image", src: "03.webp", layout: "narrow", matchRow: true, cursor: 'cursor.png'},
-            { type: "image", src: "8.webp", layout: "narrow", cursor: 'cursor.png'},
-            {type: "text-file", src: "Material palette.txt", title: "Material palette", layout: "narrow"},
-            { type: "image", src: "6.webp", layout: "narrow", cursor: 'cursor.png'},
-            { type: "image", src: "4.webp", layout: "narrow", cursor: 'cursor.png'},
-            { type: "image", src: "01.webp", layout: "narrow", cursor: 'cursor.png'},
-            { type: "image", src: "7.webp", layout: "wide", cursor: 'cursor.png'},
+            
+            { type: "video", provider: "vimeo", src: "1202137527", sound: true, layout: "narrow"},
+            { type: "text-file", src: "The shell and the insertion.txt", title: "The shell and the insertion", layout: "wide", matchRow: true},
+            { type: "image", src: "13.webp", layout: "full", cursor: 'cursor.png'},
+            { type: 'carousel', layout: 'half', images: ['2.webp', '5.webp', 'main.webp']},
+            {type: "text-file", src: "Material palette.txt", title: "Material palette", layout: "half"},
+            { type: "image", src: "05.webp", layout: "half", cursor: 'cursor.png', matchRow: true},
+            { type: "image", src: "6.webp", layout: "half", cursor: 'cursor.png'},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "4.webp", layout: "half", cursor: 'cursor.png'},
+            { type: "image", src: "7.webp", layout: "half", cursor: 'cursor.png', matchRow: true},
+            { type: "image", src: "blank.webp", layout: "narrow"},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
             { type: 'carousel', layout: 'half', images: ['9.webp', '10.webp']},
             { type: "image", src: "11.webp", layout: "full", cursor: 'cursor.png'},
-            
-           
-           
-            
-
-
- 
+        
         ]
     },
 
@@ -311,11 +304,16 @@ const dataProjects = [
             { type: "image", src: "1.webp", layout: "full" },
             { type: "image", src: "01.webp", layout: "narrow" },
             { type: "text-file", src: "Colour and object.txt", title: "Colour and object", layout: "half" },
-            { type: "image", src: "2.webp", layout: "center" },
-            { type: "image", src: "3.webp", layout: "wide" },
-            { type: "text-file", src: "Texture Mapping.txt", title: "Texture Mapping", layout: "narrow" },
-            { type: "image", src: "5.webp", layout: "narrow" },
-            { type: "image", src: "main.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "wide", cursor: 'cursor.png' },
+            { type: 'carousel', layout: 'narrow', images: ['02.webp', '03.webp']},
+            { type: "text-file", src: "Texture Mapping.txt", title: "Texture Mapping", layout: "wide", matchRow: true },
+            { type: "image", src: "05.webp", layout: "narrow" },
+            { type: "image", src: "4.webp", layout: "half" },
+            { type: "text-file", src: "The continuous surface.txt", title: "The continuous surface", layout: "half", matchRow: true },
+            { type: "text-file", src: "Colour and object.txt", title: "Colour and object", layout: "half", matchRow: true },     
+            { type: "image", src: "3.webp", layout: "half" },
+                      
+            { type: "image", src: "main.webp", layout: "full" },    
         ]
     },
 
@@ -333,12 +331,28 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
-            { type: "text-file", src: "desc02.txt", title: "Concept", layout: "full" },
-            { type: "image", src: "3.webp", layout: "full" },
-            { type: "text-file", src: "desc03.txt", title: " ", layout: "full" },
+            { type: "text-file", src: "The idea.txt", title: "Concept", layout: "half" },
+            { type: "image", src: "05.webp", layout: "narrow" },
+            { type: 'carousel', layout: 'half', images: ['10.webp', '7.webp', '6.webp', '11.webp']},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "8.webp", layout: "half" },
+            { type: "image", src: "15.webp", layout: "half" },
+            { type: "image", src: "3.webp", layout: "half" , matchRow: true},
+        
+            { type: "text-file", src: "The ceiling.txt", title: "The ceiling", layout: "half" },
             { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-           
+            { type: "image", src: "9.webp", layout: "full" },
+            { type: "image", src: "19.webp", layout: "wide" },     
+            { type: "text-file", src: "Bar, tables and floor.txt", title: "Bar, tables and floor", layout: "narrow" },
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "16.webp", layout: "half" },
+            { type: "image", src: "13.webp", layout: "half" },
+            { type: "text-file", src: "The façade and the lower level.txt", title: "The façade and the lower level", layout: "narrow" },
+            { type: "image", src: "17.webp", layout: "full" },
+            
+            
+            
         ]
     },
 
@@ -382,7 +396,7 @@ const dataProjects = [
         content: [
 
             
-            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "2.webp", layout: "narrow" },
             { type: "image", src: "3.webp", layout: "half" },
             { type: "image", src: "4.webp", layout: "half" },
             { type: "video", provider: "vimeo", src: "1151545677", layout: "half"},
@@ -464,7 +478,9 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "center" },
+       
+            { type: "image", src: "2.webp", layout: "narrow" },
+            
             { type: "image", src: "3.webp", layout: "half" },
             { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
             { type: "image", src: "5.webp", layout: "full" },

@@ -373,7 +373,22 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             // 手动切换的包装：切换 + 重置 30 秒
             const goManual = (i) => { go(i); startAuto(); };
-            startAuto();
+
+            // 进入视窗后 5 秒内先自切一次，之后转入 30 秒常规循环
+            let kicked = false;
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !kicked) {
+                        kicked = true;
+                        io.disconnect();
+                        setTimeout(() => {
+                            go(+car.dataset.index + 1);
+                            startAuto();
+                        }, 1000);
+                    }
+                });
+            }, { threshold: 0.3 });
+            io.observe(car);
 
             car.querySelector('.carousel-prev').addEventListener('click', () => goManual(+car.dataset.index - 1));
             car.querySelector('.carousel-next').addEventListener('click', () => goManual(+car.dataset.index + 1));
