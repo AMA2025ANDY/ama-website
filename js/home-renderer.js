@@ -358,12 +358,38 @@ document.addEventListener("DOMContentLoaded", () => {
             const total = track.children.length;
             if (total === 0) return;
 
+            // 鼠标光标里的圆点组(进入 carousel 时塞进 cursor-follower)
+            const cursorDotsHTML = (car.querySelectorAll('.carousel-track img').length
+                ? Array.from(track.children).map((_, i) =>
+                    `<span class="cursor-dot${i === 0 ? ' active' : ''}"></span>`).join('')
+                : '');
+
+            const syncCursorDots = (idx) => {
+                if (!cursorFollower) return;
+                const cd = cursorFollower.querySelectorAll('.cursor-dot');
+                cd.forEach((d, k) => d.classList.toggle('active', k === idx));
+            };
+
             const go = (i) => {
                 const idx = (i + total) % total;
                 car.dataset.index = idx;
                 track.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, k) => d.classList.toggle('active', k === idx));
+                syncCursorDots(idx);
             };
+
+            // 进入 carousel：把圆点组塞进鼠标跟随器，进入“圆点模式”
+            car.addEventListener('mouseenter', () => {
+                if (!cursorFollower) return;
+                cursorFollower.innerHTML = cursorDotsHTML;
+                cursorFollower.classList.add('dots-mode', 'active');
+                syncCursorDots(+car.dataset.index);
+            });
+            car.addEventListener('mouseleave', () => {
+                if (!cursorFollower) return;
+                cursorFollower.classList.remove('dots-mode', 'active');
+                cursorFollower.innerHTML = '';
+            });
 
             // 自动播放：每 30 秒下一张；任何手动操作后重置计时
             let autoTimer = null;
@@ -374,21 +400,22 @@ document.addEventListener("DOMContentLoaded", () => {
             // 手动切换的包装：切换 + 重置 30 秒
             const goManual = (i) => { go(i); startAuto(); };
 
-            // 进入视窗后 5 秒内先自切一次，之后转入 30 秒常规循环
+          // 滚动到 carousel（露出 40%）时，延迟自切一张作为“可换图”提示
             let kicked = false;
-            const io = new IntersectionObserver((entries) => {
+            const io = new IntersectionObserver((entries, obs) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting && !kicked) {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0 && !kicked) {
                         kicked = true;
-                        io.disconnect();
+                        obs.disconnect();
                         setTimeout(() => {
-                            go(+car.dataset.index + 1);
+                            if (total > 1) go(+car.dataset.index + 1);
                             startAuto();
-                        }, 1000);
+                        }, 100);
                     }
                 });
-            }, { threshold: 0.3 });
+            }, { threshold: [0, 0.4] });
             io.observe(car);
+            
 
             car.querySelector('.carousel-prev').addEventListener('click', () => goManual(+car.dataset.index - 1));
             car.querySelector('.carousel-next').addEventListener('click', () => goManual(+car.dataset.index + 1));

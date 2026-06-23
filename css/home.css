@@ -320,7 +320,7 @@ height: 95vh;
 .close-btn:hover { text-decoration: none; opacity: 1; }
 
 /* --- 弹窗头部与标题 --- */
-.modal-project-header { padding: 50px 5vw 10px 3vw; }   /* 左边 3vw，比标题更靠左 */
+.modal-project-header { padding: 0px 3vw 0px 2vw; }   /* 左边 3vw，比标题更靠左 */
 
 .modal-title { 
     font-family: 'Stack Sans Headline', sans-serif;
@@ -329,7 +329,7 @@ height: 95vh;
     letter-spacing: 0.5px;
     margin-bottom: 10px; 
     line-height: 1.1; 
-    font-size: clamp(1.2rem, 4vw, 4rem);
+    font-size: clamp(2rem, 4vw, 4rem);
 }
 
 .modal-meta { 
@@ -360,7 +360,7 @@ height: 95vh;
     margin-top: 20px; 
     margin-bottom: 20px; 
     color: #000;
-    font-size: clamp(1.3rem, 2vw, 2.5rem);
+    font-size: clamp(1.5rem, 2vw, 2.5rem);
 }
 
 .text-content {
@@ -373,9 +373,9 @@ height: 95vh;
 }
 
 .text-content.text-bold {
-    font-weight: 700; 
+    font-weight: 550; 
     font-family: 'Tinos', serif;
-    font-size: clamp(1.3rem, 2vw, 3rem);
+    font-size: clamp(1.3rem, 2.3vw, 4rem);
     color: #000;
     line-height: 1.15;
     letter-spacing: 0;
@@ -756,6 +756,32 @@ body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #0
 }
 .carousel-dot.active { opacity: 1; }
 .carousel-dot:not(.active) { opacity: 0.6; }
+
+/* carousel 区域隐藏系统箭头，改用 cursor-follower 圆点当光标 */
+.project-carousel,
+.project-carousel * {
+    cursor: none !important;
+}
+
+/* 鼠标光标里的圆点组（进入 carousel 时显示） */
+#cursor-follower.dots-mode {
+    display: flex;
+    gap: 8px;
+    background: none;          /* 盖掉原来跟随器的底色 */
+    padding: 0;
+    width: auto;
+    height: auto;
+}
+#cursor-follower .cursor-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+    /* 不再单独写 mix-blend-mode，继承父级 #cursor-follower 的 difference，避免叠加发灰 */
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+#cursor-follower .cursor-dot.active { opacity: 1; }
 
 
 @media (max-width: 768px) {

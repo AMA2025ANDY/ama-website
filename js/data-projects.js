@@ -312,7 +312,6 @@ const dataProjects = [
             { type: "text-file", src: "The continuous surface.txt", title: "The continuous surface", layout: "half", matchRow: true },
             { type: "text-file", src: "Colour and object.txt", title: "Colour and object", layout: "half", matchRow: true },     
             { type: "image", src: "3.webp", layout: "half" },
-                      
             { type: "image", src: "main.webp", layout: "full" },    
         ]
     },
@@ -339,7 +338,6 @@ const dataProjects = [
             { type: "image", src: "8.webp", layout: "half" },
             { type: "image", src: "15.webp", layout: "half" },
             { type: "image", src: "3.webp", layout: "half" , matchRow: true},
-        
             { type: "text-file", src: "The ceiling.txt", title: "The ceiling", layout: "half" },
             { type: "image", src: "2.webp", layout: "half" },
             { type: "image", src: "9.webp", layout: "full" },
@@ -368,14 +366,22 @@ const dataProjects = [
         layout: "full",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "image", src: "main.webp", layout: "full" },
-            { type: "image", src: "3.webp", layout: "full" },
+            { type: 'carousel', layout: 'half', images: ['4.webp', '7.webp', '04.webp']},
+            { type: "image", src: "01.webp", layout: "half" },
+            { type: "text-file", src: "The Screen.txt", title: "The Screen", layout: "half", matchRow: true },
+            { type: "image", src: "blank.webp", layout: "half" },
+            { type: "image", src: "05.webp", layout: "half" },
+            { type: "image", src: "02.webp", layout: "narrow" },
+            { type: 'carousel', layout: 'full', images: ['main.webp', '3.webp']},
             { type: "image", src: "2.webp", layout: "narrow" },
-            { type: "image", src: "5.webp", layout: "full" },
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "5.webp", layout: "half" },
             { type: "image", src: "6.webp", layout: "half" },
+            { type: "text-file", src: "Recognition.txt", title: "Recognition", layout: "half" },
+            { type: "video", provider: "vimeo", src: "1203538960", layout: "narrow", matchRow: true},
+            { type: "image", src: "03.webp", layout: "narrow" },
+
         ]
     },
 
@@ -387,25 +393,31 @@ const dataProjects = [
         title: "Zevaco",
         category: "commercial",
         year: "2013",
-        location: " ",
+        location: "Casablanca’s Anfa District",
         type: "video",
         provider: "vimeo",
         filename: "1198115653", 
         sound: true, 
         layout: "narrow",
         content: [
-
-            
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
+            { type: 'carousel', layout: 'full', images: ['1.webp', '01.webp']},
             { type: "image", src: "2.webp", layout: "narrow" },
+            { type: "image", src: "02.webp", layout: "narrow" },
+            { type: "text-file", src: "Threshold and Exterior Articulation.txt", title: "Threshold and Exterior Articulation", layout: "half", matchRow: true },
             { type: "image", src: "3.webp", layout: "half" },
             { type: "image", src: "4.webp", layout: "half" },
-            { type: "video", provider: "vimeo", src: "1151545677", layout: "half"},
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "1.webp", layout: "half" },
-            
-    
+           //{ type: "image", src: "blank.webp", layout: "half", matchRow: true  },
+            { type: "text-file", src: "The Interior Topography.txt", title: "The Interior Topography", layout: "half", matchRow: true },
+            { type: "video", provider: "vimeo", src: "1151545677", layout: "narrow", matchRow: true},
+            { type: 'carousel', layout: 'half', images: ['5.webp', '03.webp']},
+            { type: "video", provider: "vimeo", src: "1198115653", sound: true, layout: "narrow", matchRow: true},
+            { type: "text-file", src: "Tectonic Details and Material Tension.txt", title: "Tectonic Details and Material Tension", layout: "half", matchRow: true },
+            { type: 'carousel', layout: 'full', images: ['10.webp', '11.webp']},
+            { type: 'carousel', layout: 'half', images: ['05.webp', '6.webp']},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: 'carousel', layout: 'half', images: ['9.webp', '08.webp']},    
         ]
     },
 
@@ -421,16 +433,28 @@ const dataProjects = [
         filename: "3.webp",
         layout: "narrow",
         content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+
+            { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             
-            { type: "image", src: "3.webp", layout: "full" },
-            { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "half" },
-            { type: "image", src: "7.webp", layout: "half" },
-            { type: "image", src: "2.webp", layout: "half" },
-            { type: "image", src: "8.webp", layout: "half" },
+            { type: 'carousel', layout: 'full', images: ['3.webp', '4.webp']},
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true },     
+            { type: 'carousel', layout: 'center', images: ['08.webp', '09.webp']},
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true },
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true },        
+            { type: "image", src: "10.webp", layout: "half" },
+            { type: "image", src: "01.webp", layout: "half" },
+            { type: "text-file", src: "The Journey and Layout.txt", title: "The Journey and Layout", layout: "half", matchRow: true },            
+            { type: 'carousel', layout: 'half', images: ['2.webp', '02.webp']},
+            { type: "text-file", src: "Materiality and Layering.txt", title: "Materiality and Layering", layout: "half", matchRow: true },
+            
+            { type: 'carousel', layout: 'narrow', images: ['010.webp', '012.webp', '011.webp', '013.webp']},            
+            { type: "image", src: "8.webp", layout: "wide" },
+        
+            { type: 'carousel', layout: 'half', images: ['04.webp', '6.webp']},
+            { type: "image", src: "06.webp", layout: "narrow", matchRow: true },
             { type: "image", src: "9.webp", layout: "full" },
+            { type: "text-file", src: "Interactive Details.txt", title: "Interactive Details", layout: "wide", matchRow: true },
+
         ]
     },
 
@@ -438,27 +462,36 @@ const dataProjects = [
 
     //  01-cm-mia
     {
-        id: "01-cm-mia", // 🔴 文件夹名
+        id: "01-cm-mia",
         title: "Chotto Matte Miami",
         category: "commercial", 
-        year: "2019",
+        year: "2018",
         location: "Miami",
         type: "image",
         filename: "main.webp", 
         layout: "wide", 
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "5.webp", layout: "narrow" },
-            { type: "image", src: "1.webp", layout: "half" },
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
-            { type: "image", src: "4.webp", layout: "wide" },
-            { type: "image", src: "3.webp", layout: "narrow", matchRow: true  },
-            { type: "image", src: "9.webp", layout: "center" },
-            { type: "image", src: "10.webp", layout: "narrow" },
-            { type: "image", src: "7.webp", layout: "narrow" },
-            { type: "image", src: "8.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
-                     
+            { type: "image", src: "5.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "06.webp", layout: "half" },
+            { type: "text-file", src: "The roof.txt", title: "The Roof", layout: "wide" },
+            { type: "image", src: "9.webp", layout: "half" },
+            { type: "image", src: "08.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
+            { type: "image", src: "07.webp", layout: "wide" },
+            { type: "image", src: "03.webp", layout: "narrow" },
+            { type: "text-file", src: "The space.txt", title: "The Space", layout: "wide", matchRow: true },
+            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true },
+            { type: "image", src: "02.webp", layout: "narrow" },
+            { type: "image", src: "1.webp", layout: "half"},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "04.webp", layout: "half" },
+            { type: "image", src: "4.webp", layout: "narrow" },
+            { type: "image", src: "01.webp", layout: "narrow" },
+            { type: "image", src: "8.webp", layout: "wide" },
+            { type: "text-file", src: "Recognition.txt", title: "Recognition", layout: "full", matchRow: true },
+         
         ]
     },
 
@@ -478,9 +511,7 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "4.webp", layout: "full" },
-       
             { type: "image", src: "2.webp", layout: "narrow" },
-            
             { type: "image", src: "3.webp", layout: "half" },
             { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
             { type: "image", src: "5.webp", layout: "full" },
@@ -497,16 +528,19 @@ const dataProjects = [
         location: "Notting Hill Gate, London",
         type: "image",
         filename: "1.webp",
-        layout: "narrow",
+        layout: "half",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "3.webp", layout: "wide" },
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
-            { type: "image", src: "2.webp", layout: "half" },
-            
-            { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "half" },
+            { type: "image", src: "2.webp", layout: "half" },            
+            { type: "image", src: "16.webp", layout: "narrow", matchRow: true  },
+            { type: "text-file", src: "Circulation as the idea.txt", title: "Circulation as the idea", layout: "half" , matchRow: true },
+            { type: "image", src: "9.webp", layout: "half" },
+            { type: "text-file", src: "Surface and Material.txt", title: "Surface and Material", layout: "wide" , matchRow: true },
+            { type: "image", src: "15.webp", layout: "full" },
+            { type: 'carousel', layout: 'center', images: ['13.webp', '12.webp', '11.webp', '10.webp', '14.webp']},
+            { type: "text-file", src: "Across the four levels.txt", title: "Across the four levels", layout: "wide" , matchRow: true },
+            { type: 'carousel', layout: 'narrow', images: ['6.webp', '5.webp', '4.webp', '7.webp']},
+            { type: 'carousel', layout: 'full', images: ['17.webp', '19.webp']},
         ]
     },
 
@@ -515,7 +549,7 @@ const dataProjects = [
         id: "11-chan", 
         title: "Chan",
         category: "commercial",
-        year: "2017",
+        year: "2011",
         location: "Thessaloniki, Greece",
         type: "image",
         filename: "5.webp",
@@ -523,10 +557,16 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
+            { type: "image", src: "05.webp", layout: "narrow" },
             { type: "image", src: "3.webp", layout: "full" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
-            { type: "image", src: "4.webp", layout: "full" },
+            { type: "text-file", src: "The Brief.txt", title: "The Brief", layout: "half" },
+            { type: 'carousel', layout: 'half', images: ['7.webp', '04.webp']},
+            { type: 'carousel', layout: 'half', images: ['06.webp', '10.webp', '02.webp', '9.webp']},
+            { type: "text-file", src: "The Space.txt", title: "The Space", layout: "half" },
+            { type: "image", src: "03.webp", layout: "full" },
+            { type: 'carousel', layout: 'half', images: ['4.webp', '8.webp']},
+            { type: "image", src: "07.webp", layout: "narrow" },
+            { type: "text-file", src: "Recognition.txt", title: "Recognition", layout: "half" },
             { type: "image", src: "6.webp", layout: "full" },
             
         ]
@@ -545,14 +585,18 @@ const dataProjects = [
         layout: "half",
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            
+            { type: "image", src: "1.webp", layout: "narrow" },
+            { type: "image", src: "4.webp", layout: "narrow" },
             { type: "image", src: "2.webp", layout: "full" },
-            { type: "image", src: "1.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "half" },
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "full" },
+            { type: "image", src: "01.webp", layout: "half" },
+            { type: "text-file", src: "The conservatory.txt", title: "The conservatory", layout: "half" },
+            { type: "image", src: "blank.webp", layout: "half" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "image", src: "5.webp", layout: "half" },
-            { type: "image", src: "6.webp", layout: "full" },
+            { type: "image", src: "blank.webp", layout: "half" },
+            { type: 'carousel', layout: 'half', images: ['5.webp', '8.webp']},
+            { type: 'carousel', layout: 'full', images: ['9.webp', '10.webp', '11.webp']},
+            { type: "image", src: "blank.webp", layout: "half" },
+            { type: 'carousel', layout: 'half', images: ['12.webp', '6.webp']},
             
         ]
     },
@@ -570,11 +614,20 @@ const dataProjects = [
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
             { type: "image", src: "3.webp", layout: "full" },
-            { type: "text-file", src: "desc01.txt", title: "Brief",  layout: "full" },
-            
-            { type: "image", src: "5.webp", layout: "full" },
+            { type: "text-file", src: "The Brief.txt", title: "The Brief",  layout: "half" },
+            { type: 'carousel', layout: 'half', images: ['01.webp', '02.webp', '03.webp', '04.webp']},
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "text-file", src: "Layout and Circulation.txt", title: "Layout and Circulation",  layout: "half" },
+            { type: "image", src: "blank.webp", layout: "half" },
+            { type: "image", src: "05.webp", layout: "narrow" },
+            { type: "video", provider: "vimeo", src: "1203800635", sound: true, layout: "narrow"},
+            { type: "text-file", src: "Materials and Art.txt", title: "Materials and Art",  layout: "half" },
+
+            { type: "image", src: "2.webp", layout: "half"},
             { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "2.webp", layout: "full" },
+            { type: "text-file", src: "Credits and Context.txt", title: "Credits and Context",  layout: "half" },
+            { type: "video", provider: "vimeo", src: "1203810047", sound: true, layout: "half"},
+            
             
         ]
     },
@@ -591,10 +644,17 @@ const dataProjects = [
         layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" },
-            
             { type: "image", src: "4.webp", layout: "full" },
-            { type: "image", src: "5.webp", layout: "full" },
-            { type: "text-file", src: "desc02.txt", title: " ", layout: "full" },
+            { type: "text-file", src: "The three rooms.txt", title: "The Three Rooms", layout: "wide" },
+            { type: "image", src: "blank.webp", layout: "half" , matchRow: true  },
+            { type: "video", provider: "vimeo", src: "1203868446", sound: true, layout: "half"},
+            { type: "text-file", src: "The Decorative Scheme.txt", title: "The Decorative Scheme",  layout: "wide" },
+            { type: 'carousel', layout: 'half', images: ['04.webp', '02.webp']},
+            { type: "image", src: "blank.webp", layout: "half" , matchRow: true  },
+            { type: "image", src: "blank.webp", layout: "half" , matchRow: true  },
+            { type: 'carousel', layout: 'half', images: ['03.webp', '05.webp']},
+            { type: "image", src: "5.webp", layout: "half" },
+            { type: "text-file", src: "Light and Architecture.txt", title: "Light and Architecture", layout: "half" },
             { type: "image", src: "6.webp", layout: "full" },
             { type: "image", src: "1.webp", layout: "full" },            
         ]
@@ -605,18 +665,20 @@ const dataProjects = [
         id: "17-Barrafina-cdy", 
         title: "Barrafina CDY",
         category: "commercial",
-        year: "2017",
+        year: "2019",
         location: "CDY",
         type: "image",
         filename: "1.webp",
         layout: "narrow",
         content: [
-            // { type: "text-file", src: "desc01.txt", title: "Concept", layout: "full" }, 
+            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" }, 
             { type: "image", src: "2.webp", layout: "full" },
             { type: "image", src: "3.webp", layout: "half" },
+            { type: "text-file", src: "The Focal Point Kitchen as Theatre.txt", title: "The Focal Point Kitchen as Theatre", layout: "half", matchRow: true}, 
+            { type: "text-file", src: "Materiality and Craftsmanship.txt", title: "Materiality and Craftsmanship", layout: "half", matchRow: true  }, 
             { type: "image", src: "4.webp", layout: "half" },
             { type: "image", src: "5.webp", layout: "full" },
-            { type: "image", src: "6.webp", layout: "full" },              
+            { type: "image", src: "6.webp", layout: "narrow" },              
         ]
     },
 
