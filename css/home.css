@@ -789,3 +789,100 @@ body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #0
         display: none;
     }
 }
+
+.depth3d-canvas {
+    width: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+    cursor: grab;
+}
+.depth3d-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* depth3d 眼睛光标 */
+.depth3d-canvas { cursor: none; }       /* 藏掉系统光标 */
+.depth3d-canvas canvas { cursor: none; }
+
+#depth3d-eye {
+    position: fixed;
+    top: 0; left: 0;
+    width: 25px; height: 30px;
+    margin: -12.5px 0 0 -12.5px;
+    pointer-events: none;
+    z-index: 99999;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    will-change: transform;
+    color: #fff;        /* stroke="currentColor" 会用这个颜色 */
+}
+#depth3d-eye svg { width: 100%; height: 100%; display: block; }
+
+#depth3d-eye.active { opacity: 1; }
+
+#depth3d-eye .lid {
+    transform-origin: center;
+    animation: none;
+}
+#depth3d-eye.blink .lid {
+    animation: eyeBlink 0.3s ease;
+}
+@keyframes eyeBlink {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.05); }
+}
+
+
+.floating-video {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 400px;
+    z-index: 9999;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    cursor: pointer;
+    background: #000;
+}
+
+.floating-video iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;   /* 让鼠标事件落到容器，iframe 不拦截 */
+}
+
+
+.floating-video .fv-toggle {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 30px; height: 30px;
+    z-index: 10;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 26px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+.floating-video .fv-toggle:hover {
+    opacity: 0.7;
+}
+
+.floating-video.minimized {
+    aspect-ratio: auto !important;
+    height: 34px;
+    background: transparent;        /* 去掉黑底 */
+    box-shadow: none;               /* 去掉阴影，更轻 */
+}
+.floating-video.minimized iframe {
+    display: none;
+}

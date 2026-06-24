@@ -164,6 +164,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 : '';
             return `<img src="${ASSET_BASE}/assets/projects/${projectId}/${item.src}" class="${isModal?'modal-media':''}" style="width:100%; display:block; ${cursorStyle}" alt="Img">`;
         }
+
+        if (item.type === 'depth3d') {
+    const imgPath = `${ASSET_BASE}/assets/projects/${projectId}/${item.src}`;
+    const depthPath = `${ASSET_BASE}/assets/projects/${projectId}/${item.depth}`;
+    const strength = item.strength || 20;
+    const sway = item.sway || 12;
+    const uid = `depth3d-${Math.random().toString(36).slice(2, 9)}`;
+    return `<div class="depth3d-canvas" id="${uid}" data-img="${imgPath}" data-depth="${depthPath}" data-strength="${strength}" data-sway="${sway}"></div>`;
+}
+
+       if (item.type === 'floating-video') {
+            const vid = item.src;
+            const uid = `floatvid-${Math.random().toString(36).slice(2, 9)}`;
+            return `<div class="floating-video" id="${uid}" data-vimeo="${vid}">
+                <button class="fv-toggle" aria-label="minimize">−</button>
+                <iframe src="https://player.vimeo.com/video/${vid}?loop=1&autopause=0&muted=1&controls=0&byline=0&title=0"
+                    frameborder="0" allow="autoplay" title="Floating Video"></iframe>
+            </div>`;
+        }
         
         if (item.type === 'video') {
             // [重点修改]：Vimeo 视频强制竖版 (3:4)
@@ -351,6 +370,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         modalBody.innerHTML = htmlContent;
+        initDepth3D(modalBody);
+        initFloatingVideo(modalBody);
         setTimeout(() => initVimeoSound(modalBody), 600);
         modalBody.querySelectorAll('.project-carousel').forEach(car => {
             const track = car.querySelector('.carousel-track');
@@ -623,6 +644,7 @@ function initFlipbooks(scope) {
             setTimeout(() => { if(activeGridItem) { activeGridItem.classList.remove('putting-back'); activeGridItem=null;} }, 600);
         }
         setTimeout(() => modalBody.innerHTML='', 400);
+        document.querySelectorAll('.floating-video').forEach(el => el.remove());
     }
     if(closeBtn) closeBtn.addEventListener('click', closeModal);
     if(backdrop) backdrop.addEventListener('click', closeModal);
@@ -755,6 +777,175 @@ function initFlipbooks(scope) {
             });
         });
     }
+
+// === 3D 视差初始化（按需加载 Three.js）===
+    let threeLoading = null;
+    function loadThree() {
+        if (window.THREE) return Promise.resolve();
+        if (threeLoading) return threeLoading;
+        threeLoading = new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+            s.onload = res;
+            s.onerror = rej;
+            document.head.appendChild(s);
+        });
+        return threeLoading;
+    }
+
+    async function initDepth3D(scope) {
+        const nodes = scope.querySelectorAll('.depth3d-canvas:not([data-ready])');
+        if (!nodes.length) return;
+        await loadThree();
+        nodes.forEach(setupDepthScene);
+    }
+
+    function setupDepthScene(el) {
+        el.setAttribute('data-ready', '1');
+        const THREE = window.THREE;
+        if (!THREE) return;
+        const strength = parseFloat(el.dataset.strength) || 20;
+        let sway = parseFloat(el.dataset.sway) || 12;
+        const OVERSCAN = 1.18;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+        camera.position.z = 100;
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        el.appendChild(renderer.domElement);
+
+        const loader = new THREE.TextureLoader();
+        loader.crossOrigin = 'anonymous';
+        const loadTex = (u) => new Promise((res, rej) => loader.load(u, res, undefined, () => rej('load fail')));
+
+        Promise.all([loadTex(el.dataset.img), loadTex(el.dataset.depth)]).then(([tex, depth]) => {
+            const geo = new THREE.PlaneGeometry(100, 100, 240, 240);
+            const mat = new THREE.ShaderMaterial({
+                uniforms: { uTex: { value: tex }, uDepth: { value: depth }, uStrength: { value: strength } },
+                vertexShader: `uniform sampler2D uDepth; uniform float uStrength; varying vec2 vUv;
+                    void main(){ vUv=uv; float d=texture2D(uDepth,uv).r; vec3 p=position;
+                    p.z+=(d-0.5)*uStrength; gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0); }`,
+                fragmentShader: `uniform sampler2D uTex; varying vec2 vUv;
+                    void main(){ gl_FragColor=texture2D(uTex,vUv); }`
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            scene.add(mesh);
+            const ar = tex.image.width / tex.image.height;
+
+            function resize() {
+                const w = el.clientWidth, h = w / ar;
+                el.style.height = h + 'px';
+                renderer.setSize(w, h);
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                const vH = 2 * Math.tan((camera.fov * Math.PI / 180) / 2) * camera.position.z;
+                mesh.scale.set(vH * ar / 100 * OVERSCAN, vH / 100 * OVERSCAN, 1);
+            }
+            resize();
+            window.addEventListener('resize', debounce(resize, 100));
+
+            // 眼睛跟随器（全局只建一个，多个 depth3d 共用）
+            let eye = document.getElementById('depth3d-eye');
+            if (!eye) {
+                eye = document.createElement('div');
+                eye.id = 'depth3d-eye';
+                eye.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+</svg>`;
+                document.body.appendChild(eye);
+            }
+
+            let tx = 0, ty = 0, cx = 0, cy = 0;
+            let eyeRAF = false;
+            el.addEventListener('mousemove', (e) => {
+                const r = el.getBoundingClientRect();
+                tx = ((e.clientX - r.left) / r.width - 0.5);
+                ty = ((e.clientY - r.top) / r.height - 0.5);
+                // 眼睛跟随鼠标
+                if (!eyeRAF) {
+                    requestAnimationFrame(() => {
+                        eye.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                        eyeRAF = false;
+                    });
+                    eyeRAF = true;
+                }
+            });
+            el.addEventListener('mouseenter', () => {
+                eye.classList.add('active');
+                // 进入时眨一下
+                eye.classList.add('blink');
+                setTimeout(() => eye.classList.remove('blink'), 300);
+            });
+            el.addEventListener('mouseleave', () => {
+                tx = 0; ty = 0;
+                eye.classList.remove('active');
+            });
+
+            function animate() {
+                cx += (tx - cx) * 0.08;
+                cy += (ty - cy) * 0.08;
+                camera.position.x = cx * sway;
+                camera.position.y = -cy * sway;
+                camera.lookAt(0, 0, 0);
+                renderer.render(scene, camera);
+                requestAnimationFrame(animate);
+            }
+            animate();
+            setTimeout(resize, 300);
+            setTimeout(resize, 1000);
+        }).catch(() => {});
+    }
+
+
+   function initFloatingVideo(scope) {
+        if (typeof Vimeo === 'undefined') return;
+        const nodes = scope.querySelectorAll('.floating-video:not([data-ready])');
+        nodes.forEach(node => {
+            node.setAttribute('data-ready', '1');
+
+            // 移到 body 下，摆脱弹窗的 transform 祖先，fixed 才相对视口
+            document.body.appendChild(node);
+
+            const iframe = node.querySelector('iframe');
+            const player = new Vimeo.Player(iframe);
+
+            Promise.all([player.getVideoWidth(), player.getVideoHeight()]).then(([w, h]) => {
+                if (w && h) node.style.aspectRatio = `${w} / ${h}`;
+            }).catch(() => {});
+
+            let playing = false;
+            player.pause();
+            node.addEventListener('mouseenter', () => {
+                if (node.classList.contains('minimized')) return;   // 缩起时不响应
+                if (playing) {
+                    player.pause();
+                    playing = false;
+                } else {
+                    player.setVolume(1);
+                    player.play();
+                    playing = true;
+                }
+            });
+
+            // minimize 按钮
+            const toggleBtn = node.querySelector('.fv-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const mini = node.classList.toggle('minimized');
+                    toggleBtn.textContent = mini ? '+' : '−';
+                    if (mini && playing) { player.pause(); playing = false; }
+                });
+            }
+        });
+    }
+
+
+
+
+
 
     // 等首页格子渲染完再初始化（视频加载慢就调大这个数字）
     setTimeout(initVimeoSound, 2000);
