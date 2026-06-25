@@ -521,8 +521,9 @@ const dataProjects = [
             { type: "image", src: "4.webp", layout: "full" },
             { type: "image", src: "2.webp", layout: "narrow" },
             { type: "image", src: "3.webp", layout: "half" },
-            { type: "text-file", src: "desc01.txt", title: " ", layout: "half" },
+            { type: "text-file", src: "Light and Dark.txt", title: "Light and Dark", layout: "half" },
             { type: "image", src: "5.webp", layout: "full" },
+            { type: "text-file", src: "The Spin.txt", title: "The Spin", layout: "half" },
             { type: "image", src: "1.webp", layout: "full" },
         ]
     },
@@ -761,12 +762,17 @@ const dataProjects = [
         filename: "01.webp",
         layout: "half",
         content: [
-            { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "06.webp", layout: "half" },
-            { type: "image", src: "02.webp", layout: "half",matchRow: true },
-            { type: "image", src: "05.webp", layout: "narrow" },
-            { type: "image", src: "04.webp", layout: "narrow" },
-            { type: "image", src: "01.webp", layout: "full" },
+            { type: 'carousel', layout: 'full', images: ['01.webp', '1.webp']},
+            { type: "video", provider: "vimeo", src: "1204501982", sound: true, layout: "half"},
+            { type: "image", src: "06.webp", layout: "half",matchRow: true  },
+            
+            { type: "image", src: "02.webp", layout: "full"},
+            { type: "image", src: "05.webp", layout: "half" },
+            { type: "image", src: "blank.webp", layout: "half",matchRow: true },
+            { type: "image", src: "blank.webp", layout: "half",matchRow: true },
+            { type: "image", src: "04.webp", layout: "half" },
+            
+            
         ]
     },
 

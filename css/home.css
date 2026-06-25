@@ -886,3 +886,7 @@ body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #0
 .floating-video.minimized iframe {
     display: none;
 }
+
+
+.model3d-wrapper { cursor: grab; }
+.model3d-wrapper:active { cursor: grabbing; }

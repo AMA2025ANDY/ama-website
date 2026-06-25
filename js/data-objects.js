@@ -37,10 +37,15 @@ const dataObjects = [
         type: "image", filename: "main.webp", layout: "center",
         content: [
             { type: "text-file", src: "desc01.txt", title: " ", bold: true, layout: "full" }, 
-            { type: "image", src: "main.webp", layout: "full" },
-            { type: "image", src: "01.webp", layout: "full" },
-            { type: "image", src: "02.webp", layout: "full" },
-            { type: "image", src: "03.webp", layout: "full" },
+            { type: 'model3d', layout: 'wide', src: 'obj-01-polizzi-handle.glb' },
+            { type: "image", src: "01.webp", layout: "narrow" },
+            { type: "image", src: "blank.webp", layout: "half" },
+            { type: "image", src: "02.webp", layout: "narrow" },
+            { type: "image", src: "03.webp", layout: "narrow" },
+            { type: 'model3d', layout: 'wide', src: 'obj-01-polizzi-handle-01.glb' },
+            { type: "image", src: "main.webp", layout: "half" },
+            
+           
         ]
     },
 

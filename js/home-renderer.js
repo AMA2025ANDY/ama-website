@@ -183,6 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     frameborder="0" allow="autoplay" title="Floating Video"></iframe>
             </div>`;
         }
+
+        if (item.type === 'model3d') {
+            const modelPath = `${ASSET_BASE}/assets/projects/${projectId}/${item.src}`;
+            const uid = `model3d-${Math.random().toString(36).slice(2, 9)}`;
+            
+            // 加入 aspect-ratio 确保画布有高度，加 cursor: grab 提示可拖拽
+            return `
+            <div class="model3d-wrapper" style="position: relative; width: 100%; aspect-ratio: 4/3; background: transparent; overflow: hidden; cursor: grab;">
+                <div class="model3d-canvas" id="${uid}" data-src="${modelPath}" style="width: 100%; height: 100%;"></div>
+                <div class="model-loading" id="load-${uid}" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: 'Tinos', serif; font-size: 1.2rem; color: #888; pointer-events: none;">
+                    Loading 3D Model...
+                </div>
+            </div>`;
+        }
         
         if (item.type === 'video') {
             // [重点修改]：Vimeo 视频强制竖版 (3:4)
@@ -372,6 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
         modalBody.innerHTML = htmlContent;
         initDepth3D(modalBody);
         initFloatingVideo(modalBody);
+        initModel3D(modalBody); // <--- 新增这行，触发 3D 模型渲染
         setTimeout(() => initVimeoSound(modalBody), 600);
         modalBody.querySelectorAll('.project-carousel').forEach(car => {
             const track = car.querySelector('.carousel-track');
@@ -778,15 +793,43 @@ function initFlipbooks(scope) {
         });
     }
 
-// === 3D 视差初始化（按需加载 Three.js）===
+
+    // 等首页格子渲染完再初始化（视频加载慢就调大这个数字）
+    setTimeout(initVimeoSound, 2000);
+
+    window.addEventListener("resize", debounce(resizeAllGridItems, 100));
+
+// === 3D 视差与模型共用的基础初始化（升级引入 RoomEnvironment）===
     let threeLoading = null;
     function loadThree() {
-        if (window.THREE) return Promise.resolve();
+        if (window.THREE && window.THREE.GLTFLoader && window.THREE.RoomEnvironment) return Promise.resolve();
         if (threeLoading) return threeLoading;
+        
         threeLoading = new Promise((res, rej) => {
             const s = document.createElement('script');
-            s.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
-            s.onload = res;
+            s.src = 'https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js';
+            
+            s.onload = () => {
+                // 并行加载 GLTFLoader 和 RoomEnvironment
+                const s1 = document.createElement('script');
+                s1.src = 'https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js';
+                const s2 = document.createElement('script');
+                s2.src = 'https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js';
+                
+                let loadedCount = 0;
+                const checkDone = () => {
+                    loadedCount++;
+                    if (loadedCount === 2) res(); // 两个都加载完才算成功
+                };
+
+                s1.onload = checkDone;
+                s2.onload = checkDone;
+                s1.onerror = rej;
+                s2.onerror = rej;
+                
+                document.head.appendChild(s1);
+                document.head.appendChild(s2);
+            };
             s.onerror = rej;
             document.head.appendChild(s);
         });
@@ -845,7 +888,6 @@ function initFlipbooks(scope) {
             resize();
             window.addEventListener('resize', debounce(resize, 100));
 
-            // 眼睛跟随器（全局只建一个，多个 depth3d 共用）
             let eye = document.getElementById('depth3d-eye');
             if (!eye) {
                 eye = document.createElement('div');
@@ -863,7 +905,6 @@ function initFlipbooks(scope) {
                 const r = el.getBoundingClientRect();
                 tx = ((e.clientX - r.left) / r.width - 0.5);
                 ty = ((e.clientY - r.top) / r.height - 0.5);
-                // 眼睛跟随鼠标
                 if (!eyeRAF) {
                     requestAnimationFrame(() => {
                         eye.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
@@ -874,7 +915,6 @@ function initFlipbooks(scope) {
             });
             el.addEventListener('mouseenter', () => {
                 eye.classList.add('active');
-                // 进入时眨一下
                 eye.classList.add('blink');
                 setTimeout(() => eye.classList.remove('blink'), 300);
             });
@@ -898,14 +938,11 @@ function initFlipbooks(scope) {
         }).catch(() => {});
     }
 
-
-   function initFloatingVideo(scope) {
+    function initFloatingVideo(scope) {
         if (typeof Vimeo === 'undefined') return;
         const nodes = scope.querySelectorAll('.floating-video:not([data-ready])');
         nodes.forEach(node => {
             node.setAttribute('data-ready', '1');
-
-            // 移到 body 下，摆脱弹窗的 transform 祖先，fixed 才相对视口
             document.body.appendChild(node);
 
             const iframe = node.querySelector('iframe');
@@ -918,7 +955,7 @@ function initFlipbooks(scope) {
             let playing = false;
             player.pause();
             node.addEventListener('mouseenter', () => {
-                if (node.classList.contains('minimized')) return;   // 缩起时不响应
+                if (node.classList.contains('minimized')) return;
                 if (playing) {
                     player.pause();
                     playing = false;
@@ -929,7 +966,6 @@ function initFlipbooks(scope) {
                 }
             });
 
-            // minimize 按钮
             const toggleBtn = node.querySelector('.fv-toggle');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', (e) => {
@@ -942,13 +978,147 @@ function initFlipbooks(scope) {
         });
     }
 
+    // === 3D 模型初始化 (PBR真实质感 + 边缘轮廓光) ===
+    async function initModel3D(scope) {
+        const nodes = scope.querySelectorAll('.model3d-canvas:not([data-ready])');
+        if (!nodes.length) return;
 
+        await loadThree();
+        const THREE = window.THREE;
 
+        // 1. 全局监听鼠标/触摸位置 (归一化到 -0.5 到 0.5)
+        let mouseX = 0;
+        let mouseY = 0;
+        if (!window._modelMouseListenerAdded) {
+            // 桌面端：鼠标移动
+            window.addEventListener('mousemove', (e) => {
+                mouseX = (e.clientX / window.innerWidth) - 0.5;
+                mouseY = (e.clientY / window.innerHeight) - 0.5;
+            });
+            
+            // 移动端：手指滑动 (加 passive:true 防止页面滚动卡顿)
+            window.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    mouseX = (e.touches[0].clientX / window.innerWidth) - 0.5;
+                    mouseY = (e.touches[0].clientY / window.innerHeight) - 0.5;
+                }
+            }, { passive: true });
+            
+            window._modelMouseListenerAdded = true;
+        }
 
+        nodes.forEach(el => {
+            el.setAttribute('data-ready', '1');
+            const modelUrl = el.getAttribute('data-src');
+            const loaderUI = document.getElementById('load-' + el.id);
 
+            const w = el.clientWidth;
+            const h = el.clientHeight;
 
-    // 等首页格子渲染完再初始化（视频加载慢就调大这个数字）
-    setTimeout(initVimeoSound, 2000);
+            const scene = new THREE.Scene();
+            
+            // 相机归零，稍微拉远，死死盯住画面正中心 (解决模型偏下的问题)
+            const camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+            camera.position.set(0, 0, 6); 
+            camera.lookAt(0, 0, 0);
 
-    window.addEventListener("resize", debounce(resizeAllGridItems, 100));
-});
+            // 保持背景透明，融入你的网页纯白底色
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            
+            // 🌟 核心魔法 1：开启物理色彩空间，金属质感飞升
+            renderer.outputEncoding = THREE.sRGBEncoding;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0; 
+            
+            el.appendChild(renderer.domElement);
+
+            // 🌟 核心魔法 2：生成虚拟摄影棚环境 (提供四周的反射光斑)
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+            scene.environment = pmremGenerator.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+
+            // 🌟 核心魔法 3：高级打光法则
+            // 基础微弱环境光（防止暗部彻底死黑）
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+
+            // 正面补光 (Fill Light)：温柔照亮正面细节
+            const fillLight = new THREE.DirectionalLight(0xffffff, 1.2);
+            fillLight.position.set(2, 2, 5);
+            scene.add(fillLight);
+
+            // 强烈轮廓光 (Rim Light)：从左后上方打过来，专门刮擦金属边缘，勾勒轮廓！
+            const rimLight = new THREE.DirectionalLight(0xffaa77, 3.0); // 稍微带一点暖色调的高光
+            rimLight.position.set(-5, 5, -5);
+            scene.add(rimLight);
+
+            let targetGroup = null;
+
+            const loader = new THREE.GLTFLoader();
+            loader.load(modelUrl, (gltf) => {
+                if(loaderUI) loaderUI.style.display = 'none'; 
+                const model = gltf.scene;
+
+                // 强制中心归零大法
+                const box = new THREE.Box3().setFromObject(model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                model.position.sub(center);
+
+                // 根据原始尺寸进行自适应缩放
+                const maxDim = Math.max(size.x, size.y, size.z);
+                if (maxDim > 0) {
+                    model.scale.setScalar(3.5 / maxDim);
+                }
+
+                // 放进 Group 中，旋转这个 Group 而不是模型本身，保证轴心不乱
+                targetGroup = new THREE.Group();
+                targetGroup.add(model);
+                scene.add(targetGroup);
+
+            }, undefined, (error) => {
+                console.error('GLTF Load Error:', error);
+                if(loaderUI) loaderUI.innerText = 'Load failed. Please check the file path.';
+            });
+
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                if (targetGroup) {
+                    // 获取当前时间的秒数，用来做平滑的周期性动画
+                    const time = performance.now() * 0.001; 
+
+                    // 基础的鼠标/手指跟随逻辑
+                    const targetRotY = mouseX * Math.PI * 1.5; 
+                    const targetRotX = mouseY * Math.PI * 0.5; 
+                    
+                    // 🌟 注入灵魂：即使鼠标不动，也叠加一个基于时间的极缓慢自转 (呼吸感)
+                    const autoRotY = Math.sin(time * 0.5) * 0.2; 
+                    const autoRotX = Math.cos(time * 0.7) * 0.1;
+                    
+                    // 计算最终角度并加上阻尼平滑
+                    targetGroup.rotation.y += ((targetRotY + autoRotY) - targetGroup.rotation.y) * 0.05;
+                    targetGroup.rotation.x += ((targetRotX + autoRotX) - targetGroup.rotation.x) * 0.05;
+                    
+                    // 附加小彩蛋：让模型稍微有一点点上下浮动，更加生动
+                    targetGroup.position.y = Math.sin(time * 1.5) * 0.03; 
+                }
+
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            const resizeObserver = new ResizeObserver(() => {
+                const nw = el.clientWidth;
+                const nh = el.clientHeight;
+                if(nw === 0 || nh === 0) return;
+                renderer.setSize(nw, nh);
+                camera.aspect = nw / nh;
+                camera.updateProjectionMatrix();
+            });
+            resizeObserver.observe(el);
+        });
+    }
+
+}); // <--- DOMContentLoaded 总事件监听闭合，必须是文件最后一行
