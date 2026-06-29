@@ -23,6 +23,21 @@
 //    空行:   { type: "text", title: " ", text: " ", layout: "half" },
 //
 //  ▌最容易写错: 每行 { } 结尾要有逗号;文字用英文双引号 "" 不能用中文引号 “”
+
+// ===== Vimeo / 视频 ratio 速查表（modal 里用）=====
+// ratio = padding-bottom 值 = 高 ÷ 宽 × 100%
+// 不写 ratio 默认 56.25%（16:9 横版），大多数横版视频直接不用写
+//
+//   16:9  横版（最常见）  →  ratio: "56.25%"
+//   4:3   横版（偏方）    →  ratio: "75%"
+//   1:1   正方形         →  ratio: "100%"
+//   3:4   竖版（和图片一致）→  ratio: "133.33%"
+//   9:16  竖版（手机全屏）  →  ratio: "177.78%"
+//
+// 例：{ type: "video", provider: "vimeo", src: "1201433966", layout: "wide", ratio: "56.25%" },
+// ================================================
+
+
 // =====================================================================
 
 const dataProjects = [
@@ -474,31 +489,41 @@ const dataProjects = [
         title: "Chotto Matte Miami",
         category: "commercial", 
         year: "2018",
-        location: "Miami",
+        location: "Miami Beach, Florida, USA",
         type: "image",
         filename: "main.webp", 
         layout: "wide", 
         content: [
             { type: "text-file", src: "desc.txt", title: " ", bold: true, layout: "full" },
-            { type: "image", src: "5.webp", layout: "narrow", matchRow: true},
             { type: "image", src: "06.webp", layout: "half" },
-            { type: "text-file", src: "The roof.txt", title: "The Roof", layout: "wide" },
-            { type: "image", src: "9.webp", layout: "half" },
-            { type: "image", src: "08.webp", layout: "narrow", matchRow: true},
-            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true},
+            { type: "video", provider: "vimeo", src: "1205405474", sound: true, layout: "half", ratio: "56.25%"},
+            { type: "text-file", src: "A Roof That Opens to the Sky.txt", title: "A Roof That Opens to the Sky", layout: "half", matchRow: true},
+            { type: 'carousel', layout: "mini", images: ['010.webp', '011.webp', '012.webp'] },
+            { type: "image", src: "9.webp", layout: "center" },
+            { type: "video", provider: "vimeo", src: "1205410624", sound: true, layout: "narrow", ratio: "133.33%"},
+            { type: "image", src: "blank.webp", layout: "narrow"},
             { type: "image", src: "07.webp", layout: "wide" },
-            { type: "image", src: "03.webp", layout: "narrow" },
-            { type: "text-file", src: "The space.txt", title: "The Space", layout: "wide", matchRow: true },
-            { type: "image", src: "blank.webp", layout: "narrow", matchRow: true },
-            { type: "image", src: "02.webp", layout: "narrow" },
-            { type: "image", src: "1.webp", layout: "half"},
-            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
-            { type: "image", src: "blank.webp", layout: "half", matchRow: true},
+            { type: "image", src: "03.webp", layout: "half" },
+            { type: "text-file", src: "A White Wall off Lenox Avenue.txt", title: "A White Wall off Lenox Avenue", layout: "half", matchRow: true },
+            { type: "video", provider: "vimeo", src: "1205431259", layout: "full", ratio: "56.25%"},
+            { type: "image", src: "10.webp", layout: "full", hoverText: "Chotto Matte Miami Entrance" },
             { type: "image", src: "04.webp", layout: "half" },
-            { type: "image", src: "4.webp", layout: "narrow" },
-            { type: "image", src: "01.webp", layout: "narrow" },
-            { type: "image", src: "8.webp", layout: "wide" },
-            { type: "text-file", src: "Recognition.txt", title: "Recognition", layout: "full", matchRow: true },
+            { type: "video", provider: "vimeo", src: "1205484360", layout: "half", ratio: "56.25%"},
+            { type: "text-file", src: "Tokyo Meets Miami.txt", title: "Tokyo Meets Miami", layout: "half", matchRow: true },
+            { type: "image", src: "013.webp", layout: "center", hoverText: "Manufacturing Boulder"},
+            { type: "text-file", src: "The Cenote and the Mural.txt", title: "The Cenote and the Mural", layout: "half", matchRow: true },
+            { type: "image", src: "02.webp", layout: "half" , hoverText: "Boulder in Chotto Matte Miami"},
+            { type: 'carousel', layout: 'half', images: ['014.webp', '015.webp', '016.webp', '017.webp']},
+            { type: "image", src: "018.webp", layout: "half", matchRow: true},
+            { type: "image", src: "019.webp", layout: "mini"},
+            { type: "image", src: "11.webp", layout: "center"},
+            { type: "video", provider: "vimeo", src: "1205509073", layout: "mini", ratio: "56.25%"},
+            { type: "image", src: "1.webp", layout: "half", hoverText: "Looking Down from the Opening"},
+            { type: "text-file", src: "Graphic.txt", title: "Tokyo Meets Miami", layout: "half", matchRow: true },
+            { type: "image", src: "blank.webp", layout: "half"},
+            { type: "image", src: "4.webp", layout: "half", hoverText: "Bathroom View" },
+            { type: "image", src: "01.webp", layout: "half" },       
+            { type: "text-file", src: "Recognition.txt", title: "Recognition", layout: "half"},
          
         ]
     },

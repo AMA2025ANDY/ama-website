@@ -208,9 +208,10 @@ body:has(.grid-mode) .dropdown-content a {
 .email-copy-wrapper.active .copy-tip { opacity: 1; transform: translateX(-50%) translateY(-5px); }
 
 /* === 9. 瀑布流容器 & 悬停动效 === */
-.waterfall-container {
+.waterfall-container { 
     display: grid; grid-template-columns: repeat(12, 1fr); 
     grid-auto-rows: 1px; column-gap: 0px; row-gap: 0px; padding: 0; align-items: start;
+    grid-auto-flow: dense;    
 }
 .waterfall-item { margin: 0; position: relative; cursor: none; will-change: transform; }
 
@@ -218,7 +219,9 @@ body:has(.grid-mode) .dropdown-content a {
 .layout-wide { grid-column: span 8; }
 .layout-narrow { grid-column: span 4; }
 .layout-half { grid-column: span 6; }
-.layout-center { grid-column: 4 / 10; }
+.layout-center { grid-column: 4 / 10; } 
+.layout-mini { grid-column: span 3; }       
+
 
 .waterfall-item img,
 .waterfall-item video, 
@@ -356,11 +359,11 @@ height: 95vh;
 
 .text-title {
     font-family: 'Stack Sans Headline', sans-serif;
-    font-weight: 700; 
+    font-weight: 400; 
     margin-top: 20px; 
     margin-bottom: 20px; 
     color: #000;
-    font-size: clamp(1.5rem, 2vw, 2.5rem);
+    font-size: clamp(1.5rem, 2vw, 2.3rem);
 }
 
 .text-content {
@@ -890,3 +893,11 @@ body:has(.grid-mode) .copy-tip { background-color: #F1F0EA !important; color: #0
 
 .model3d-wrapper { cursor: grab; }
 .model3d-wrapper:active { cursor: grabbing; }
+
+
+
+.project-carousel:hover .carousel-dots {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}

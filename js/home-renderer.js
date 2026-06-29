@@ -55,14 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
         mouseY = e.clientY;
         
         const targetItem = e.target.closest('.waterfall-item');
-        if (targetItem) {
-            const title = targetItem.getAttribute('data-title');
-            if (title && cursorFollower) {
-                cursorFollower.innerText = title;
-                cursorFollower.classList.add('active');
-            }
-        } else {
-            if (cursorFollower) cursorFollower.classList.remove('active');
+        const title = targetItem ? targetItem.getAttribute('data-title') : null;
+
+        // carousel 圆点模式下，不要用文字逻辑覆盖圆点
+        if (cursorFollower && cursorFollower.classList.contains('dots-mode')) {
+            // 圆点模式：什么都不做，保留圆点
+        } else if (title && cursorFollower) {
+            cursorFollower.innerText = title;
+            cursorFollower.classList.add('active');
+        } else if (cursorFollower) {
+            cursorFollower.classList.remove('active');
         }
 
         if (!isCursorTicking) {
@@ -158,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // B. 对象类型数据
         if (item.type === 'image') {
-            // modal 里标了 cursor 的图,鼠标移上去变成指定 png 指针
+            // png 指针优先；没 png 但有 hoverText 时，hover 显示反相跟随文字（逻辑在 openModal 挂 data-title）
             const cursorStyle = (isModal && item.cursor)
                 ? `cursor: url('${ASSET_BASE}/assets/projects/${projectId}/${item.cursor}') 16 16, auto;`
                 : '';
@@ -199,32 +201,37 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         
         if (item.type === 'video') {
-            // [重点修改]：Vimeo 视频强制竖版 (3:4)
             if (item.provider === 'vimeo') {
                 const src = item.src || item.filename; 
-                // 首页网格加遮罩，防止鼠标被iframe吸走
                 const overlay = isModal ? '' : '<div style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:20; cursor:pointer;"></div>';
-                
-                // 1. padding-bottom: 133.33% = 3:4 比例 (竖长方形，和图片一致)
-                // 2. transform: scale(1.4) = 放大视频，确保横屏视频填满竖屏格子，不留黑边
-                const aspectRatio = "133.33%"; 
 
-                // 只有首页封面 + data 里标了 sound:true 的，才用可控音量参数(去掉 background=1)
+                // 只有标了 sound:true 的才用可控音量参数（modal 也允许出声）
                 const wantSound = item.sound === true;
                 const vimeoParams = wantSound
                     ? `autoplay=1&loop=1&muted=1&controls=0&byline=0&title=0&badge=0&autopause=0`
                     : `background=1&autoplay=1&loop=1&byline=0&title=0&badge=0&autopause=0`;
                 const soundFlag = wantSound ? 'data-vimeo-sound="1"' : '';
-                
+
+                if (isModal) {
+                    // 固定框（按 layout 给比例），视频 cover 填满裁切，永远无白边
+                    const ratio = item.ratio || "75%";   // 框比例，narrow 竖图建议 75%~133%，half/wide 横建议 56.25%
+                    return `
+                    <div class="video-wrapper" style="position: relative; width: 100%; padding-bottom: ${ratio}; height: 0; overflow: hidden; background: #000;">
+                        <iframe ${soundFlag} src="https://player.vimeo.com/video/${src}?${vimeoParams}" 
+                            style="position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border: 0; transform: translate(-50%, -50%) scale(1.5); pointer-events: none;" 
+                            frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="Vimeo Video">
+                        </iframe>
+                    </div>`;
+                }
+
+                // 首页：锁 3:4 竖版 + scale 裁切，保持瀑布流整齐
+                const aspectRatio = "133.33%"; 
                 return `
                 <div class="video-wrapper" style="position: relative; width: 100%; padding-bottom: ${aspectRatio}; height: 0; overflow: hidden; background: transparent;">
                     ${overlay}
                     <iframe ${soundFlag} src="https://player.vimeo.com/video/${src}?${vimeoParams}" 
                         style="position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border: 0; transform: translate(-50%, -50%) scale(1.4); pointer-events: none;" 
-                        frameborder="0" 
-                        allow="autoplay; fullscreen" 
-                        allowfullscreen 
-                        title="Vimeo Video">
+                        frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="Vimeo Video">
                     </iframe>
                 </div>`;
             }
@@ -234,21 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const poster = item.poster ? `${ASSET_BASE}/assets/projects/${projectId}/${item.poster}` : '';
             const path = `${ASSET_BASE}/assets/projects/${projectId}/${src}`;
             return `<div class="video-wrapper"><video autoplay muted loop playsinline ${poster?`poster="${poster}"`:''} style="width:100%; display:block;" class="${isModal?'modal-media':''}"><source src="${path}" type="video/mp4"></video></div>`;
-        }
-
-      if (item.type === 'flipbook') {
-            const urls = (item.pages || []).map(f =>
-                `${ASSET_BASE}/assets/projects/${projectId}/${f}`
-            );
-            const fbId = 'flipbook-' + Math.random().toString(36).slice(2, 9);
-            return `
-            <div class="flipbook-wrap">
-                <div class="flipbook" id="${fbId}" data-flipbook data-pages='${JSON.stringify(urls)}'></div>
-                <div class="fb-nav">
-                    <button class="fb-prev" type="button" aria-label="Previous">‹</button>
-                    <button class="fb-next" type="button" aria-label="Next">›</button>
-                </div>
-            </div>`;
         }
 
         return '';
@@ -352,8 +344,12 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="carousel-dots">${dots}</div>
                         </div>`;
                 }
-                else if (typeof item === 'object') {
-                    htmlContent += `<div class="waterfall-item modal-item layout-${item.layout || 'half'}"${item.matchRow ? ' data-match-row="1"' : ''}>${generateMediaHTML(item, project.id, true)}</div>`;
+               else if (typeof item === 'object') {
+                    const titleAttr = (item.hoverText && !item.cursor) ? ` data-title="${escapeHTML(item.hoverText)}"` : '';
+                    // 视频块带上 ratio，供 recalc 精确算高度（不靠测量 iframe）
+                    const ratioAttr = (item.type === 'video') ? ` data-ratio="${parseFloat(item.ratio) || 56.25}"` : '';
+                    const matchRowAttr = item.matchRow ? ' data-match-row="1"' : '';
+                    htmlContent += `<div class="waterfall-item modal-item layout-${item.layout || 'half'}"${titleAttr}${ratioAttr}${matchRowAttr}>${generateMediaHTML(item, project.id, true)}</div>`;
                 }
                 else if (typeof item === 'string') {
                     htmlContent += `<div class="waterfall-item modal-item layout-half">${generateMediaHTML(item, project.id, true)}</div>`;
@@ -532,7 +528,7 @@ if (modalContent) {
         document.body.style.overflow = 'hidden';
         history.replaceState(null, '', `?id=${project.id}`);
 
-       const recalculateModalLayout = () => {
+      const recalculateModalLayout = () => {
             const grid = document.querySelector('.modal-waterfall-container');
             if (!grid) return;
 
@@ -542,10 +538,20 @@ if (modalContent) {
 
             const items = Array.from(document.querySelectorAll('.modal-item'));
 
-            // 第一步：先给所有"非文字"块（图片/视频）按自身高度算行数
+          // 第一步：图片/视频按自身高度算行数
             items.forEach(item => {
-                if (item.classList.contains('project-text-block')) return; // 文字块稍后处理
-                const h = item.scrollHeight;
+                if (item.classList.contains('project-text-block')) return;
+                if (item.getAttribute('data-match-row')) return;
+
+                let h;
+                const ratio = item.getAttribute('data-ratio');
+                if (ratio) {
+                    // 视频块：高度 = 块宽 × ratio%
+                    h = item.getBoundingClientRect().width * (parseFloat(ratio) / 100);
+                } else {
+                    // 图片块：用 scrollHeight（图片 load 后准）
+                    h = item.scrollHeight;
+                }
                 if (h === 0) return;
                 item.style.gridRowEnd = "span " + toSpan(h);
             });
