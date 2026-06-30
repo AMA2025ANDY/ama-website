@@ -299,7 +299,7 @@ height: 95vh;
     align-items: flex-start;
     justify-content: space-between;
     gap: 20px;
-    padding: 30px 5vw 20px;
+    padding: 50px 7vw 0px;
     background: transparent;            /* 透明，difference 才能反相底图 */
     mix-blend-mode: difference;
     pointer-events: none;               /* 标题不挡下面图片的鼠标 */
@@ -323,7 +323,7 @@ height: 95vh;
 .close-btn:hover { text-decoration: none; opacity: 1; }
 
 /* --- 弹窗头部与标题 --- */
-.modal-project-header { padding: 0px 3vw 0px 2vw; }   /* 左边 3vw，比标题更靠左 */
+.modal-project-header { padding: 0px 3vw 0px 3vw; }   /* 左边 3vw，比标题更靠左 */
 
 .modal-title { 
     font-family: 'Stack Sans Headline', sans-serif;
@@ -353,7 +353,7 @@ height: 95vh;
 
 /* --- 文本块样式 (Text Layout) --- */
 .project-text-block {
-    padding: 30px 3vw 30px 3vw;
+    padding: 20px 3vw 20px 3vw;
     display: flex; flex-direction: column; justify-content: flex-start;
 }
 
@@ -363,12 +363,12 @@ height: 95vh;
     margin-top: 20px; 
     margin-bottom: 20px; 
     color: #000;
-    font-size: clamp(1.5rem, 2vw, 2.3rem);
+    font-size: clamp(1.5rem, 2vw, 2.1rem);
 }
 
 .text-content {
     font-family: 'Tinos', serif;    
-    font-size: clamp(1rem, 1.5vw, 3rem);
+    font-size: clamp(1rem, 1.5vw, 2rem);
     line-height: 1.2; 
     color: #000;    
     font-weight: 500;            
